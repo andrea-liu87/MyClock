@@ -1,0 +1,13 @@
+<resources>
+
+    <!--    Menu related string   -->
+    <string name="app_name">MyClock</string>
+    <string name="clock">Clock</string>
+    <string name="alarm">Alarm</string>
+    <string name="stopwatch">Stopwatch</string>
+    <string name="timer">Timer</string>
+    <string name="manual_switch_label">Manual</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
