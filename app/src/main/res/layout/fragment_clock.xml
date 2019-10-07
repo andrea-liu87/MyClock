@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_theme">
 
-<!--    Further feature replacce with recycler view add fab button
-for add more clock diff timezone-->
+    <!--    Further feature replace with recycler view add fab button
+    for add more clock diff timezone-->
 
     <Switch
         android:id="@+id/clock_switch"
@@ -18,17 +18,37 @@ for add more clock diff timezone-->
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextClock
-        android:id="@+id/digital_clock_tv"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/clock_frame"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:format12Hour="hh:mm:ss a"
-        android:textSize="56sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.40" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextClock
+            android:id="@+id/digital_clock_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:format12Hour="hh:mm:ss a"
+            android:textSize="56sp"
+            android:visibility="visible" />
+
+        <com.arbelkilani.clock.Clock
+            android:id="@+id/analog_clock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:visibility="gone"
+            app:center_inner_color="#000000"
+            app:clock_value_disposition="regular"
+            app:clock_value_step="full"
+            app:show_center="true"
+            app:show_hours_values="true"
+            app:show_seconds_needle="true" />
+    </FrameLayout>
 
 
     <TextView
@@ -37,8 +57,8 @@ for add more clock diff timezone-->
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textAppearance="?android:textAppearanceLarge"
-        app:layout_constraintEnd_toEndOf="@+id/digital_clock_tv"
-        app:layout_constraintStart_toStartOf="@+id/digital_clock_tv"
-        app:layout_constraintTop_toBottomOf="@+id/digital_clock_tv" />
+        app:layout_constraintEnd_toEndOf="@+id/clock_frame"
+        app:layout_constraintStart_toStartOf="@+id/clock_frame"
+        app:layout_constraintTop_toBottomOf="@+id/clock_frame" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
