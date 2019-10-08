@@ -5,9 +5,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_theme">
 
-    <!--    Further feature replace with recycler view add fab button
-    for add more clock diff timezone-->
-
     <Switch
         android:id="@+id/clock_switch"
         android:layout_width="wrap_content"
@@ -18,47 +15,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/clock_frame"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:id="@+id/clock_rv"
+        app:layout_constraintTop_toBottomOf="@id/clock_switch"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
-        <TextClock
-            android:id="@+id/digital_clock_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:format12Hour="hh:mm:ss a"
-            android:textSize="56sp"
-            android:visibility="visible" />
-
-        <com.arbelkilani.clock.Clock
-            android:id="@+id/analog_clock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:visibility="gone"
-            app:center_inner_color="#000000"
-            app:clock_value_disposition="regular"
-            app:clock_value_step="full"
-            app:show_center="true"
-            app:show_hours_values="true"
-            app:show_seconds_needle="true" />
-    </FrameLayout>
-
-
-    <TextView
-        android:id="@+id/date_tv"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textAppearance="?android:textAppearanceLarge"
-        app:layout_constraintEnd_toEndOf="@+id/clock_frame"
-        app:layout_constraintStart_toStartOf="@+id/clock_frame"
-        app:layout_constraintTop_toBottomOf="@+id/clock_frame" />
+        android:id="@+id/add_clock_fab"
+        android:layout_margin="12dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,11 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.andreasgift.myclock.ClockRecyclerViewAdapter
 import com.andreasgift.myclock.R
 import com.andreasgift.myclock.helper.Constants
 import kotlinx.android.synthetic.main.fragment_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -20,24 +24,34 @@ import java.util.*
  */
 class ClockFragment : Fragment() {
 
-    private var calendar = Calendar.getInstance()
-
     val sharedPref = activity?.getSharedPreferences(Constants().PREF_KEY_MANUAL_CLOCK, Context.MODE_PRIVATE)
+    val isAnalogshow  = sharedPref?.getBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
 
     lateinit var  view: ViewGroup
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: ClockRecyclerViewAdapter
+    private lateinit var viewManager: RecyclerView.LayoutManager
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view  = inflater.inflate(R.layout.fragment_clock, container, false) as ViewGroup
 
-        view.clock_switch.setOnCheckedChangeListener { switchView, isChecked ->
+        viewManager = LinearLayoutManager(this.context)
+        viewAdapter = ClockRecyclerViewAdapter(getData())
+
+        recyclerView = view.findViewById<RecyclerView>(R.id.clock_rv).apply {
+            setHasFixedSize(true)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
+
+        view.clock_switch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked){
-                showAnalogClock()
                 sharedPref?.edit {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, true)
                     commit()}
             } else {
-                showDigitalCLock()
                 sharedPref?.edit {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
                     commit()}
@@ -48,31 +62,14 @@ class ClockFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        setupPreferences()
-        setupCalendar(calendar)
+        getData()
     }
 
-    fun setupCalendar(mcalendar: Calendar){
-        val formattedDate = SimpleDateFormat("EEEE, d MMMM")
-        view.date_tv.text = formattedDate.format(mcalendar.time)
-    }
 
-    fun setupPreferences(){
-        val isAnalogshow = sharedPref?.getBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
-        if (isAnalogshow == true){
-            showAnalogClock()
-        } else {
-            showDigitalCLock()
-        }
-    }
-
-    private fun showAnalogClock() {
-        view.digital_clock_tv.visibility = View.GONE
-        view.analog_clock.visibility = View.VISIBLE
-    }
-
-    private fun showDigitalCLock() {
-        view.digital_clock_tv.visibility = View.VISIBLE
-        view.analog_clock.visibility = View.GONE
+    fun getData() : ArrayList<Clock>{
+        val clockList = arrayListOf<Clock>()
+        clockList.add(Clock(Calendar.getInstance()))
+        clockList.add(Clock(Calendar.getInstance()))
+        return clockList
     }
 }
