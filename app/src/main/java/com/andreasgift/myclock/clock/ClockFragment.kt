@@ -54,11 +54,13 @@ class ClockFragment : Fragment() {
                     commit()
                 }
                 isAnalogshow = true
+                viewAdapter.showAnalogClock()
             } else {
                 sharedPref?.edit {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
                     commit()}
                 isAnalogshow = false
+                viewAdapter.showDigitalClock()
             }
         }
         return view

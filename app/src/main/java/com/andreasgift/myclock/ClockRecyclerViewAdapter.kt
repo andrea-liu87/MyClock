@@ -44,4 +44,12 @@ class ClockRecyclerViewAdapter(
         clockList = data
         notifyDataSetChanged()
     }
+
+    fun showDigitalClock() {
+        //TODO show digital clock method
+    }
+
+    fun showAnalogClock() {
+        //TODO show analog clock method
+    }
 }
