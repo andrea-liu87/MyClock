@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.concurrent.timer
 
 
 /**
@@ -25,7 +26,7 @@ import kotlin.collections.ArrayList
 class ClockFragment : Fragment() {
 
     val sharedPref = activity?.getSharedPreferences(Constants().PREF_KEY_MANUAL_CLOCK, Context.MODE_PRIVATE)
-    val isAnalogshow  = sharedPref?.getBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
+    var isAnalogshow = sharedPref?.getBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false) ?: false
 
     lateinit var  view: ViewGroup
 
@@ -38,7 +39,7 @@ class ClockFragment : Fragment() {
         view  = inflater.inflate(R.layout.fragment_clock, container, false) as ViewGroup
 
         viewManager = LinearLayoutManager(this.context)
-        viewAdapter = ClockRecyclerViewAdapter(getData())
+        viewAdapter = ClockRecyclerViewAdapter(getData(), isAnalogshow)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.clock_rv).apply {
             setHasFixedSize(true)
@@ -46,30 +47,29 @@ class ClockFragment : Fragment() {
             adapter = viewAdapter
         }
 
-        view.clock_switch.setOnCheckedChangeListener { _, isChecked ->
+        view.clock_switch.setOnCheckedChangeListener { switchView, isChecked ->
             if (isChecked){
                 sharedPref?.edit {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, true)
-                    commit()}
+                    commit()
+                }
+                isAnalogshow = true
             } else {
                 sharedPref?.edit {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
                     commit()}
+                isAnalogshow = false
             }
         }
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
-        getData()
-    }
-
 
     fun getData() : ArrayList<Clock>{
         val clockList = arrayListOf<Clock>()
-        clockList.add(Clock(Calendar.getInstance()))
-        clockList.add(Clock(Calendar.getInstance()))
+        clockList.add(Clock())
+        clockList.add(Clock("America/Los_Angeles"))
+        clockList.add(Clock("Singapore"))
         return clockList
     }
 }

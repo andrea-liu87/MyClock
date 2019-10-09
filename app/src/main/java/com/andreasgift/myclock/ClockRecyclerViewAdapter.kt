@@ -7,8 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.clock.Clock
 import kotlinx.android.synthetic.main.item_clock.view.*
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-class ClockRecyclerViewAdapter(private var clockList : ArrayList<Clock>?) : RecyclerView.Adapter<ClockRecyclerViewAdapter.ClockViewHolder>() {
+class ClockRecyclerViewAdapter(
+    private var clockList: ArrayList<Clock>?,
+    private var isAnalog: Boolean = false
+) : RecyclerView.Adapter<ClockRecyclerViewAdapter.ClockViewHolder>() {
 
     class ClockViewHolder(val itemview : View) : RecyclerView.ViewHolder(itemview)
 
@@ -19,8 +24,18 @@ class ClockRecyclerViewAdapter(private var clockList : ArrayList<Clock>?) : Recy
 
     override fun onBindViewHolder(holder: ClockViewHolder, position: Int) {
         val formattedDate = SimpleDateFormat("EEEE, d MMMM")
-        var calendar = clockList!!.get(position)!!.timezoneCalendar
-        holder.itemview.date_tv.text = formattedDate.format(calendar.time)
+        val countryTZ = clockList?.get(position)?.timeZone
+        countryTZ?.let {
+            formattedDate.timeZone = TimeZone.getTimeZone(countryTZ)
+            holder.itemview.date_tv.text = formattedDate.format(Calendar.getInstance().time)
+            holder.itemview.digital_clock_tv.timeZone = countryTZ
+            holder.itemview.country_tv.text = countryTZ
+        } ?: run {
+            holder.itemview.date_tv.text = formattedDate.format(
+                Calendar.getInstance().time
+            )
+            holder.itemview.country_tv.text = ""
+        }
     }
 
     override fun getItemCount(): Int = clockList?.size ?: 0

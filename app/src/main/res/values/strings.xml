@@ -6,8 +6,6 @@
     <string name="alarm">Alarm</string>
     <string name="stopwatch">Stopwatch</string>
     <string name="timer">Timer</string>
-    <string name="manual_switch_label">Manual</string>
+    <string name="manual_switch_label">Analog</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
