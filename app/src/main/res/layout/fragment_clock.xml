@@ -26,6 +26,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/add_clock_fab"
         android:layout_margin="12dp"
+        android:clickable="true"
+        android:src="@android:drawable/ic_input_add"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 

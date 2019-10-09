@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,6 +64,11 @@ class ClockFragment : Fragment() {
                 viewAdapter.showDigitalClock()
             }
         }
+
+        view.add_clock_fab.setOnClickListener {
+            Toast.makeText(this.requireContext(), "Clock is added", Toast.LENGTH_LONG).show()
+        }
+
         return view
     }
 
