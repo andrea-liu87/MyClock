@@ -62,6 +62,7 @@ class ClockFragment : Fragment() {
                 isAnalogshow = false
                 viewAdapter.showDigitalClock()
             }
+            viewAdapter.notifyDataSetChanged();
         }
         return view
     }
