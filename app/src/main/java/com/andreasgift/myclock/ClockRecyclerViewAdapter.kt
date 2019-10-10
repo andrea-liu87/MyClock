@@ -1,10 +1,13 @@
 package com.andreasgift.myclock
 
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.clock.Clock
+import com.andreasgift.myclock.clock.ClockFragment
 import kotlinx.android.synthetic.main.item_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -13,6 +16,7 @@ import kotlin.collections.ArrayList
 class ClockRecyclerViewAdapter(
     private var clockList: ArrayList<Clock>?,
     private var isAnalog: Boolean = false
+
 ) : RecyclerView.Adapter<ClockRecyclerViewAdapter.ClockViewHolder>() {
 
     class ClockViewHolder(val itemview : View) : RecyclerView.ViewHolder(itemview)
@@ -30,11 +34,13 @@ class ClockRecyclerViewAdapter(
             holder.itemview.date_tv.text = formattedDate.format(Calendar.getInstance().time)
             holder.itemview.digital_clock_tv.timeZone = countryTZ
             holder.itemview.country_tv.text = countryTZ
+            setClockType(holder, isAnalog)
         } ?: run {
             holder.itemview.date_tv.text = formattedDate.format(
                 Calendar.getInstance().time
             )
             holder.itemview.country_tv.text = ""
+            setClockType(holder, isAnalog)
         }
     }
 
@@ -45,11 +51,22 @@ class ClockRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
+    fun setClockType(holder: ClockViewHolder, isAnalog: Boolean){
+        if (isAnalog) {
+            holder.itemview.digital_clock_tv.visibility = View.GONE
+            holder.itemview.analog_clock.visibility = View.VISIBLE
+        } else{
+            holder.itemview.analog_clock.visibility = View.GONE
+            holder.itemview.digital_clock_tv.visibility = View.VISIBLE
+        }
+    }
+
     fun showDigitalClock() {
-        //TODO show digital clock method
+        isAnalog = false
     }
 
     fun showAnalogClock() {
-        //TODO show analog clock method
+        isAnalog = true
     }
+
 }
