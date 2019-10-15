@@ -2,10 +2,13 @@ package com.andreasgift.myclock.clock
 
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
@@ -22,59 +25,76 @@ import kotlin.concurrent.timer
 
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment for Clock
  */
 class ClockFragment : Fragment() {
 
-    val sharedPref = activity?.getSharedPreferences(Constants().PREF_KEY_MANUAL_CLOCK, Context.MODE_PRIVATE)
-    var isAnalogshow = sharedPref?.getBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false) ?: false
+    lateinit var sharedPref: SharedPreferences
+
+    private var isAnalogshow: Boolean = false
 
     lateinit var  view: ViewGroup
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: ClockRecyclerViewAdapter
-    private lateinit var viewManager: RecyclerView.LayoutManager
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedPref =
+            activity!!.getSharedPreferences(Constants().PREF_KEY_MANUAL_CLOCK, Context.MODE_PRIVATE)
+        isAnalogshow = sharedPref.getBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view  = inflater.inflate(R.layout.fragment_clock, container, false) as ViewGroup
 
-        viewManager = LinearLayoutManager(this.context)
+        if (isAnalogshow) {
+            view.clock_switch.isChecked = true
+        } else {
+            view.clock_switch.isChecked = false
+        }
+
         viewAdapter = ClockRecyclerViewAdapter(getData(), isAnalogshow)
 
         recyclerView = view.findViewById<RecyclerView>(R.id.clock_rv).apply {
             setHasFixedSize(true)
-            layoutManager = viewManager
+            layoutManager = LinearLayoutManager(this.context)
             adapter = viewAdapter
         }
 
-        view.clock_switch.setOnCheckedChangeListener { switchView, isChecked ->
-            if (isChecked){
-                sharedPref?.edit {
+        view.clock_switch.setOnCheckedChangeListener(switchCheckListener)
+        view.add_clock_fab.setOnClickListener(fabClickListener)
+        return view
+    }
+
+
+    //Listener for Analog or Digital Clock Switch
+    val switchCheckListener: CompoundButton.OnCheckedChangeListener =
+        CompoundButton.OnCheckedChangeListener { switchView, isChecked ->
+            if (isChecked) {
+                sharedPref.edit() {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, true)
                     commit()
                 }
                 isAnalogshow = true
                 viewAdapter.showAnalogClock()
             } else {
-                sharedPref?.edit {
+                sharedPref.edit {
                     putBoolean(Constants().PREF_KEY_MANUAL_CLOCK, false)
-                    commit()}
+                }
                 isAnalogshow = false
                 viewAdapter.showDigitalClock()
             }
             viewAdapter.notifyDataSetChanged();
         }
 
-        view.add_clock_fab.setOnClickListener {
-            Toast.makeText(this.requireContext(), "Clock is added", Toast.LENGTH_LONG).show()
-        }
-
-        return view
+    //Listener for fab button
+    val fabClickListener: View.OnClickListener = View.OnClickListener {
+        Toast.makeText(this.requireContext(), "Clock is added", Toast.LENGTH_LONG).show()
     }
 
-
-    fun getData() : ArrayList<Clock>{
+    //Dummy data for testing
+    fun getData(): ArrayList<Clock> {
         val clockList = arrayListOf<Clock>()
         clockList.add(Clock())
         clockList.add(Clock("America/Los_Angeles"))

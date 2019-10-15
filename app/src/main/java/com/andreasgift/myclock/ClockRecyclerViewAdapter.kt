@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.clock.Clock
 import com.andreasgift.myclock.clock.ClockFragment
+import com.arbelkilani.clock.listener.ClockListener
 import kotlinx.android.synthetic.main.item_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,16 +30,17 @@ class ClockRecyclerViewAdapter(
     override fun onBindViewHolder(holder: ClockViewHolder, position: Int) {
         val formattedDate = SimpleDateFormat("EEEE, d MMMM")
         val countryTZ = clockList?.get(position)?.timeZone
+
+        setClockType(holder, isAnalog)
+
         countryTZ?.let {
             formattedDate.timeZone = TimeZone.getTimeZone(countryTZ)
             holder.itemview.date_tv.text = formattedDate.format(Calendar.getInstance().time)
             holder.itemview.digital_clock_tv.timeZone = countryTZ
             holder.itemview.country_tv.text = countryTZ
-            setClockType(holder, isAnalog)
+            //holder.itemview.analog_clock.setTimezone(countryTZ) TODO waiting for the library to update code
         } ?: run {
-            holder.itemview.date_tv.text = formattedDate.format(
-                Calendar.getInstance().time
-            )
+            holder.itemview.date_tv.text = formattedDate.format(Calendar.getInstance().time)
             holder.itemview.country_tv.text = ""
             setClockType(holder, isAnalog)
         }

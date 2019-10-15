@@ -24,10 +24,9 @@
 
         <com.arbelkilani.clock.Clock
             android:id="@+id/analog_clock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="216dp"
+            android:layout_gravity="center"
             app:center_inner_color="#000000"
             app:clock_value_disposition="regular"
             app:clock_value_step="full"
