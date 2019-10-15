@@ -12,6 +12,7 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.ClockRecyclerViewAdapter
@@ -48,20 +49,14 @@ class ClockFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view  = inflater.inflate(R.layout.fragment_clock, container, false) as ViewGroup
 
-        if (isAnalogshow) {
-            view.clock_switch.isChecked = true
-        } else {
-            view.clock_switch.isChecked = false
-        }
-
         viewAdapter = ClockRecyclerViewAdapter(getData(), isAnalogshow)
-
         recyclerView = view.findViewById<RecyclerView>(R.id.clock_rv).apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(this.context)
             adapter = viewAdapter
         }
 
+        view.clock_switch.isChecked = isAnalogshow
         view.clock_switch.setOnCheckedChangeListener(switchCheckListener)
         view.add_clock_fab.setOnClickListener(fabClickListener)
         return view
@@ -90,6 +85,8 @@ class ClockFragment : Fragment() {
 
     //Listener for fab button
     val fabClickListener: View.OnClickListener = View.OnClickListener {
+        val dialog = CountryListFragment()
+        dialog.show(activity!!.supportFragmentManager, "Country List Fragment")
         Toast.makeText(this.requireContext(), "Clock is added", Toast.LENGTH_LONG).show()
     }
 

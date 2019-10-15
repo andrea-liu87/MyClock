@@ -1,18 +1,13 @@
 package com.andreasgift.myclock
 
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.clock.Clock
-import com.andreasgift.myclock.clock.ClockFragment
-import com.arbelkilani.clock.listener.ClockListener
 import kotlinx.android.synthetic.main.item_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ClockRecyclerViewAdapter(
     private var clockList: ArrayList<Clock>?,
