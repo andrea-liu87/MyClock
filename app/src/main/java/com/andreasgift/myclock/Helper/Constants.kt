@@ -1,4 +1,4 @@
-package com.andreasgift.myclock.helper
+package com.andreasgift.myclock.Helper
 
 class Constants {
 

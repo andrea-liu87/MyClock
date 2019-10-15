@@ -1,10 +1,9 @@
-package com.andreasgift.myclock.clock
+package com.andreasgift.myclock.Clock
 
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +11,13 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.ClockRecyclerViewAdapter
 import com.andreasgift.myclock.R
-import com.andreasgift.myclock.helper.Constants
+import com.andreasgift.myclock.Helper.Constants
 import kotlinx.android.synthetic.main.fragment_clock.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.concurrent.timer
 
 
 /**

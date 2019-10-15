@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.andreasgift.myclock.clock.Clock
+import com.andreasgift.myclock.Clock.Clock
 import kotlinx.android.synthetic.main.item_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*

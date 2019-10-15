@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import com.andreasgift.myclock.clock.ClockFragment
+import com.andreasgift.myclock.Clock.ClockFragment
 
 class MainActivity : AppCompatActivity() {
 
