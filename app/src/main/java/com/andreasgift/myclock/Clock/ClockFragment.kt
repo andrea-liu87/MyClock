@@ -11,6 +11,7 @@ import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.ClockRecyclerViewAdapter
@@ -51,9 +52,21 @@ class ClockFragment : Fragment() {
             adapter = viewAdapter
         }
 
+
+
         view.clock_switch.isChecked = isAnalogshow
         view.clock_switch.setOnCheckedChangeListener(switchCheckListener)
         view.add_clock_fab.setOnClickListener(fabClickListener)
+
+        val swipeCallback = object : SwipeCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // TODO remove function at adapter
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
         return view
     }
 
