@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.andreasgift.myclock.ClockData.ClockViewModel
 import com.andreasgift.myclock.ClockRecyclerViewAdapter
 import com.andreasgift.myclock.R
 import com.andreasgift.myclock.Helper.Constants
@@ -35,6 +36,9 @@ class ClockFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: ClockRecyclerViewAdapter
 
+    //private val clockViewModel :ClockViewModel by viewModel()
+    //TODO https://codelabs.developers.google.com/codelabs/android-room-with-a-view-kotlin/index.html?index=..%2F..index#0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref =
@@ -52,24 +56,22 @@ class ClockFragment : Fragment() {
             adapter = viewAdapter
         }
 
-
-
-        view.clock_switch.isChecked = isAnalogshow
-        view.clock_switch.setOnCheckedChangeListener(switchCheckListener)
-        view.add_clock_fab.setOnClickListener(fabClickListener)
-
         val swipeCallback = object : SwipeCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // TODO remove function at adapter
+                val position = viewHolder.adapterPosition
+                viewAdapter.deleteItem(position)
             }
         }
 
         val itemTouchHelper = ItemTouchHelper(swipeCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
 
+        view.clock_switch.isChecked = isAnalogshow
+        view.clock_switch.setOnCheckedChangeListener(switchCheckListener)
+        view.add_clock_fab.setOnClickListener(fabClickListener)
+
         return view
     }
-
 
     //Listener for Analog or Digital Clock Switch
     val switchCheckListener: CompoundButton.OnCheckedChangeListener =

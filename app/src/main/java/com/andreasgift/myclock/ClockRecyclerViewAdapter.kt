@@ -33,7 +33,7 @@ class ClockRecyclerViewAdapter(
             holder.itemview.date_tv.text = formattedDate.format(Calendar.getInstance().time)
             holder.itemview.digital_clock_tv.timeZone = countryTZ
             holder.itemview.country_tv.text = countryTZ
-            //holder.itemview.analog_clock.setTimezone(countryTZ) TODO waiting for the library to update code
+            holder.itemview.analog_clock.setTimezone(countryTZ)
         } ?: run {
             holder.itemview.date_tv.text = formattedDate.format(Calendar.getInstance().time)
             holder.itemview.country_tv.text = ""
@@ -45,6 +45,11 @@ class ClockRecyclerViewAdapter(
 
     fun setData(data : ArrayList<Clock>){
         clockList = data
+        notifyDataSetChanged()
+    }
+
+    fun deleteItem(position: Int) {
+        clockList!!.remove(clockList!!.get(position))
         notifyDataSetChanged()
     }
 
