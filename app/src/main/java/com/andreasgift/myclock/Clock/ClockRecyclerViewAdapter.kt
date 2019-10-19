@@ -1,10 +1,10 @@
-package com.andreasgift.myclock
+package com.andreasgift.myclock.Clock
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.andreasgift.myclock.Clock.Clock
+import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.item_clock.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,6 +42,10 @@ class ClockRecyclerViewAdapter(
     }
 
     override fun getItemCount(): Int = clockList?.size ?: 0
+
+    fun getItem(position: Int): Clock {
+        return clockList!!.get(position)
+    }
 
     fun setData(data : ArrayList<Clock>){
         clockList = data
