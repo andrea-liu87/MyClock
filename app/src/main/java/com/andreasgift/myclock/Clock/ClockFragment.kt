@@ -58,7 +58,7 @@ class ClockFragment : Fragment() {
 
         clockViewModel.allClock.observe(this, Observer {
             viewAdapter.setData(ArrayList(it))
-        });
+        })
 
         val swipeCallback = object : SwipeCallback(requireContext()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {

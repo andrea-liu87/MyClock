@@ -7,5 +7,7 @@
     <string name="stopwatch">Stopwatch</string>
     <string name="timer">Timer</string>
     <string name="manual_switch_label">Analog</string>
+    <string name="set">SET</string>
+    <string name="cancel">CANCEL</string>
 
 </resources>
