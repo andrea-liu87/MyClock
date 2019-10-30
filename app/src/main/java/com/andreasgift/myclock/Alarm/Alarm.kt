@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.room.*
+import com.andreasgift.myclock.Helper.Constants
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -33,19 +34,24 @@ class Alarm(
     val id: Int = 0
 ) {
 
-    fun setAlarmSchOnOff(isOn: Boolean, activity: Activity){
-        if (isOn){setAlarmScheduleOn(activity)}
-        if (!isOn){setAlarmScheduleOff(activity)}
+    fun setAlarmSchOnOff(isOn: Boolean, activity: Activity, alarmId: Int) {
+        if (isOn) {
+            setAlarmScheduleOn(activity, alarmId)
+        }
+        if (!isOn) {
+            setAlarmScheduleOff(activity, alarmId)
+        }
     }
 
 
-    fun setAlarmScheduleOn (activity: Activity) {
+    fun setAlarmScheduleOn(activity: Activity, alarmId: Int) {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        Log.d("ALARM ON", Integer.toString(id))
+        Log.d("ALARM ON", Integer.toString(alarmId))
         val alarmIntent = Intent(activity, AlarmReceiver::class.java).let { intent ->
+            intent.putExtra(Constants().ALARM_LABEL_KEY, label)
             PendingIntent.getBroadcast(
                 activity,
-                id,
+                alarmId,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
@@ -74,13 +80,13 @@ class Alarm(
         }
     }
 
-    fun setAlarmScheduleOff(activity: Activity) {
+    fun setAlarmScheduleOff(activity: Activity, alarmId: Int) {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        Log.d("ALARM OFF", Integer.toString(id))
+        Log.d("ALARM OFF", Integer.toString(alarmId))
         val alarmIntent = Intent(activity, AlarmReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(
                 activity,
-                id,
+                alarmId,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )}
