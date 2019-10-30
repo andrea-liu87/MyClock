@@ -63,7 +63,7 @@ class EditAlarmFragment(var alarm: Alarm? = null) : DialogFragment() {
             view.label_et.text.toString() ?: ""
         )
         alarmViewModel.insertAlarm(newAlarm)
-        newAlarm.setAlarmScheduleOn(this.requireActivity())
+        newAlarm.setAlarmScheduleOn(this.requireActivity(), newAlarm.id)
     }
 
     private fun updateAlarm(alarm: Alarm) {

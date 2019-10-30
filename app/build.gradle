@@ -61,4 +61,6 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutines"
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    implementation 'com.airbnb.android:lottie:3.1.0'
 }
