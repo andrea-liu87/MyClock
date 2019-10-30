@@ -17,4 +17,7 @@ interface AlarmDao {
 
     @Query("DELETE FROM alarm_data_table")
     suspend fun deleteAll()
+
+    @Update
+    suspend fun update(alarm: Alarm)
 }

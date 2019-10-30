@@ -38,42 +38,49 @@
         <ToggleButton
             android:id="@+id/sun_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="S"
             android:textOn="S" />
 
         <ToggleButton
             android:id="@+id/mon_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="M"
             android:textOn="M" />
 
         <ToggleButton
             android:id="@+id/tue_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="T"
             android:textOn="T" />
 
         <ToggleButton
             android:id="@+id/wed_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="W"
             android:textOn="W" />
 
         <ToggleButton
             android:id="@+id/thu_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="T"
             android:textOn="T" />
 
         <ToggleButton
             android:id="@+id/fri_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="F"
             android:textOn="F" />
 
         <ToggleButton
             android:id="@+id/sat_button"
             style="@style/toggle_button_day"
+            android:clickable="false"
             android:textOff="S"
             android:textOn="S" />
     </LinearLayout>

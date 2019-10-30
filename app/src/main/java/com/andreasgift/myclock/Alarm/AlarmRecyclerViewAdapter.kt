@@ -7,13 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.item_alarm.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class AlarmRecyclerViewAdapter(
-    private var alarmList: ArrayList<Alarm>?
+    private var alarmList: ArrayList<Alarm>?,
+    private val mSwitchHandler: switchHandler
 ) : RecyclerView.Adapter<AlarmRecyclerViewAdapter.AlarmViewHolder>() {
 
     class AlarmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+
+    interface switchHandler {
+        fun updateAlarmData(alarm: Alarm)
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_alarm, parent, false)
@@ -28,9 +34,14 @@ class AlarmRecyclerViewAdapter(
         val alarm = alarmList!!.get(position)
         holder.itemView.label_alarm_tv.setText(alarm.label)
         holder.itemView.alarm_switch.isChecked = alarm.isOn
+        holder.itemView.alarm_switch.setOnCheckedChangeListener { switch, ischecked ->
+            alarm.isOn = ischecked
+            mSwitchHandler.updateAlarmData(alarm)
+        }
         setTimeText(alarm, holder)
         setDaysToogle(alarm, holder)
     }
+
 
     /**
      * Set days for repeating alarm toggle button
@@ -62,6 +73,17 @@ class AlarmRecyclerViewAdapter(
                 holder.itemView.sat_button.isChecked = true
             }
         }
+    }
+
+    override fun onViewRecycled(holder: AlarmViewHolder) {
+        super.onViewRecycled(holder)
+        holder.itemView.mon_button.isChecked = false
+        holder.itemView.tue_button.isChecked = false
+        holder.itemView.wed_button.isChecked = false
+        holder.itemView.thu_button.isChecked = false
+        holder.itemView.fri_button.isChecked = false
+        holder.itemView.sat_button.isChecked = false
+        holder.itemView.sun_button.isChecked = false
     }
 
     /**

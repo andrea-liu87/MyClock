@@ -30,4 +30,8 @@ class AlarmViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteAll() = viewModelScope.launch {
         alarmRepo.deleteAll()
     }
+
+    fun updateAlarm(alarm: Alarm) = viewModelScope.launch {
+        alarmRepo.updateAlarm(alarm)
+    }
 }

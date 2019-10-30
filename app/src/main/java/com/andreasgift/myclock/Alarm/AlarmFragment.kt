@@ -11,19 +11,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.AlarmData.AlarmViewModel
 import com.andreasgift.myclock.Clock.SwipeCallback
-import com.andreasgift.myclock.R
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.fragment_alarm.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 
-class AlarmFragment : Fragment() {
+class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: AlarmRecyclerViewAdapter
@@ -46,13 +45,14 @@ class AlarmFragment : Fragment() {
             false
         ) as ViewGroup
 
-        viewAdapter = AlarmRecyclerViewAdapter(null)
+        viewAdapter = AlarmRecyclerViewAdapter(null, this)
         recyclerView =
             view.findViewById<RecyclerView>(com.andreasgift.myclock.R.id.alarm_rv).apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(this.context)
                 adapter = viewAdapter
             }
+        recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         alarmViewModel.allAlarmData.observe(this, Observer {
             viewAdapter.setData(ArrayList(it))
         })
@@ -73,34 +73,13 @@ class AlarmFragment : Fragment() {
         return view
     }
 
+    override fun updateAlarmData(alarm: Alarm) {
+        alarmViewModel.updateAlarm(alarm)
+        alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity())
+    }
+
     val fabListener = View.OnClickListener {
         val fragment = EditAlarmFragment()
         fragment.show(activity!!.supportFragmentManager, "EditAlarmFragment")
-    }
-
-
-    fun setAlarm(alarm: Alarm) {
-        val alarmManager = this.activity!!.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(context, AlarmReceiver::class.java).let { intent ->
-            PendingIntent.getBroadcast(
-                context,
-                0,
-                intent,
-                0
-            )
-        }
-
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, alarm.alarmHour)
-            set(Calendar.MINUTE, alarm.alarmMin)
-        }
-
-        alarmManager.setInexactRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            alarmIntent
-        )
     }
 }
