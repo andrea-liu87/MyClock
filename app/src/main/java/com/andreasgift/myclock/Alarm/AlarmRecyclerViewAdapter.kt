@@ -12,6 +12,7 @@ class AlarmRecyclerViewAdapter(
     private var alarmList: ArrayList<Alarm>?,
     private val mSwitchHandler: switchHandler
 ) : RecyclerView.Adapter<AlarmRecyclerViewAdapter.AlarmViewHolder>() {
+    var onItemClickListener: (alarm: Alarm) -> Unit = {}
 
     class AlarmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -40,6 +41,7 @@ class AlarmRecyclerViewAdapter(
         }
         setTimeText(alarm, holder)
         setDaysToogle(alarm, holder)
+        holder.itemView.setOnClickListener { onItemClickListener(alarm) }
     }
 
 
