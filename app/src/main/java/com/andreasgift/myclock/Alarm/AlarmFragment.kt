@@ -1,9 +1,5 @@
 package com.andreasgift.myclock.Alarm
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.AlarmData.AlarmViewModel
 import com.andreasgift.myclock.Clock.SwipeCallback
 import kotlinx.android.synthetic.main.fragment_alarm.view.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
@@ -46,6 +40,9 @@ class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
         ) as ViewGroup
 
         viewAdapter = AlarmRecyclerViewAdapter(null, this)
+        viewAdapter.onItemClickListener = { alarm ->
+            showEditAlarmFragment(alarm)
+        }
         recyclerView =
             view.findViewById<RecyclerView>(com.andreasgift.myclock.R.id.alarm_rv).apply {
                 setHasFixedSize(true)
@@ -79,7 +76,11 @@ class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
     }
 
     val fabListener = View.OnClickListener {
-        val fragment = EditAlarmFragment()
-        fragment.show(activity!!.supportFragmentManager, "EditAlarmFragment")
+        showEditAlarmFragment()
+    }
+
+    private fun showEditAlarmFragment(alarm: Alarm? = null) {
+        val fragment = EditAlarmFragment.newInstance(alarm)
+        fragment.show(requireActivity().supportFragmentManager, "EditAlarmFragment")
     }
 }
