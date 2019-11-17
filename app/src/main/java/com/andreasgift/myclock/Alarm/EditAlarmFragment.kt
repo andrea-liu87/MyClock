@@ -60,10 +60,11 @@ class EditAlarmFragment(var alarm: Alarm? = null) : DialogFragment() {
             view.time_picker.hour < 12,
             alarmToggleGetData(view),
             true,
-            view.label_et.text.toString() ?: ""
+            view.label_et.text.toString() ?: "",
+            (0..10000).random()
         )
         alarmViewModel.insertAlarm(newAlarm)
-        newAlarm.setAlarmScheduleOn(this.requireActivity(), newAlarm.id)
+        newAlarm.setAlarmScheduleOn(this.requireActivity())
     }
 
     private fun updateAlarm(alarm: Alarm) {

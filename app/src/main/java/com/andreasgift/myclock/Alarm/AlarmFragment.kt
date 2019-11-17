@@ -75,7 +75,7 @@ class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
 
     override fun updateAlarmData(alarm: Alarm) {
         alarmViewModel.updateAlarm(alarm)
-        alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity(), alarm.id)
+        alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity())
     }
 
     val fabListener = View.OnClickListener {

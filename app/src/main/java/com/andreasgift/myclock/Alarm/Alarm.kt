@@ -30,28 +30,29 @@ class Alarm(
 
     var label: String,
 
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    @PrimaryKey
+    val id: Int
 ) {
 
-    fun setAlarmSchOnOff(isOn: Boolean, activity: Activity, alarmId: Int) {
+    fun setAlarmSchOnOff(isOn: Boolean, activity: Activity) {
         if (isOn) {
-            setAlarmScheduleOn(activity, alarmId)
+            setAlarmScheduleOn(activity)
         }
         if (!isOn) {
-            setAlarmScheduleOff(activity, alarmId)
+            setAlarmScheduleOff(activity)
         }
     }
 
 
-    fun setAlarmScheduleOn(activity: Activity, alarmId: Int) {
+    fun setAlarmScheduleOn(activity: Activity) {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        Log.d("ALARM ON", Integer.toString(alarmId))
+        Log.d("ALARM ON", Integer.toString(id))
         val alarmIntent = Intent(activity, AlarmReceiver::class.java).let { intent ->
             intent.putExtra(Constants().ALARM_LABEL_KEY, label)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             PendingIntent.getBroadcast(
                 activity,
-                alarmId,
+                id,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
@@ -80,13 +81,13 @@ class Alarm(
         }
     }
 
-    fun setAlarmScheduleOff(activity: Activity, alarmId: Int) {
+    fun setAlarmScheduleOff(activity: Activity) {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        Log.d("ALARM OFF", Integer.toString(alarmId))
+        Log.d("ALARM OFF", Integer.toString(id))
         val alarmIntent = Intent(activity, AlarmReceiver::class.java).let { intent ->
             PendingIntent.getBroadcast(
                 activity,
-                alarmId,
+                id,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )}

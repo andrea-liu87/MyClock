@@ -12,7 +12,7 @@ import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.activity_alarm_notif.*
 
 class AlarmNotifActivity : AppCompatActivity() {
-    private val snoozeTiming = 6000000L
+    private val snoozeTiming = 600000L
 
     private var label: String? = null
 
@@ -42,7 +42,7 @@ class AlarmNotifActivity : AppCompatActivity() {
         )
         alarmManager.set(
             AlarmManager.RTC_WAKEUP,
-            snoozeTiming,
+            System.currentTimeMillis() + snoozeTiming,
             pendingIntent
         )
         finish()
