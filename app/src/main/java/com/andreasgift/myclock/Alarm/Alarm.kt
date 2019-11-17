@@ -8,6 +8,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.room.*
 import com.andreasgift.myclock.Helper.Constants
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -32,7 +33,7 @@ class Alarm(
 
     @PrimaryKey
     val id: Int
-) {
+) : Serializable {
 
     fun setAlarmSchOnOff(isOn: Boolean, activity: Activity) {
         if (isOn) {

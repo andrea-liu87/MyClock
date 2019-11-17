@@ -10,14 +10,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.andreasgift.myclock.AlarmData.AlarmViewModel
+import com.andreasgift.myclock.Helper.putArgs
 import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.fragment_alarm_edit.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
-class EditAlarmFragment(var alarm: Alarm? = null) : DialogFragment() {
+private const val ALARM_KEY = "alarmKey"
 
+class EditAlarmFragment : DialogFragment() {
+    private var alarm: Alarm? = null
     private lateinit var alarmViewModel: AlarmViewModel
+
+    companion object {
+        fun newInstance(alarm: Alarm? = null) = EditAlarmFragment().putArgs {
+            putSerializable(ALARM_KEY, alarm)
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        alarm = arguments?.getSerializable(ALARM_KEY) as Alarm?
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +49,14 @@ class EditAlarmFragment(var alarm: Alarm? = null) : DialogFragment() {
 
         val inflater = requireActivity().layoutInflater
         val view = inflater.inflate(R.layout.fragment_alarm_edit, null)
-
+        alarm?.let {
+            updateUi(view, it)
+        }
         builder.setView(view)
             .setPositiveButton(context.getString(R.string.set),
                 DialogInterface.OnClickListener { dialog, id ->
                     alarm?.let {
-                        updateAlarm(it)
+                        updateAlarm(view, it)
                     } ?: run {
                         addNewAlarm(view)
                     }
@@ -50,6 +65,24 @@ class EditAlarmFragment(var alarm: Alarm? = null) : DialogFragment() {
                 DialogInterface.OnClickListener { dialog, id ->
                 })
         return builder
+    }
+
+    @TargetApi(23)
+    private fun updateUi(view: View, alarm: Alarm) {
+        view.time_picker.hour = alarm.alarmHour
+        view.time_picker.minute = alarm.alarmMin
+        view.label_et.setText(alarm.label)
+        alarm.days?.forEach {
+            when (it) {
+                Calendar.MONDAY -> view.mon_button.isChecked = true
+                Calendar.TUESDAY -> view.tue_button.isChecked = true
+                Calendar.WEDNESDAY -> view.wed_button.isChecked = true
+                Calendar.THURSDAY -> view.thu_button.isChecked = true
+                Calendar.FRIDAY -> view.fri_button.isChecked = true
+                Calendar.SATURDAY -> view.sat_button.isChecked = true
+                Calendar.SUNDAY -> view.sun_button.isChecked = true
+            }
+        }
     }
 
     @TargetApi(23)
@@ -67,8 +100,10 @@ class EditAlarmFragment(var alarm: Alarm? = null) : DialogFragment() {
         newAlarm.setAlarmScheduleOn(this.requireActivity())
     }
 
-    private fun updateAlarm(alarm: Alarm) {
-
+    @TargetApi(23)
+    private fun updateAlarm(view: View, alarm: Alarm) {
+        alarmViewModel.updateAlarm(alarm)
+        alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity())
     }
 
     private fun alarmToggleGetData(view: View): ArrayList<Int>? {
