@@ -4,6 +4,9 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -15,18 +18,22 @@ class AlarmNotifActivity : AppCompatActivity() {
     private val snoozeTiming = 600000L
 
     private var label: String? = null
+    private lateinit var mMediaPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm_notif)
 
+        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         intent.getStringExtra(Constants().ALARM_LABEL_KEY)?.let {
             label = it
             this.label_tv.setText(label)
         }
+        playSound(soundUri)
     }
 
     fun dismissButton(view: View) {
+        stopSound()
         finish()
     }
 
@@ -45,6 +52,25 @@ class AlarmNotifActivity : AppCompatActivity() {
             System.currentTimeMillis() + snoozeTiming,
             pendingIntent
         )
+        stopSound()
         finish()
+    }
+
+    private fun playSound(uri: Uri) {
+        mMediaPlayer = MediaPlayer.create(this@AlarmNotifActivity, uri)
+        mMediaPlayer.isLooping = true
+        mMediaPlayer.start()
+    }
+
+    private fun stopSound() {
+        mMediaPlayer?.let {
+            it.stop()
+            it.release()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopSound()
     }
 }
