@@ -44,7 +44,6 @@ class Alarm(
         }
     }
 
-
     fun setAlarmScheduleOn(activity: Activity) {
         val alarmManager = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         Log.d("ALARM ON", Integer.toString(id))
@@ -68,7 +67,7 @@ class Alarm(
         days?.let {
             it.forEach {
                 calendar.set(Calendar.DAY_OF_WEEK, it) }
-            alarmManager.setInexactRepeating(
+            alarmManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 calendar.timeInMillis,
                 AlarmManager.INTERVAL_HOUR,
