@@ -6,6 +6,8 @@ import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import com.andreasgift.myclock.Alarm.AlarmFragment
 import com.andreasgift.myclock.Clock.ClockFragment
+import com.andreasgift.myclock.Stopwatch.StopwatchFragment
+import com.andreasgift.myclock.Timer.TimerFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -39,10 +41,10 @@ class MainActivity : AppCompatActivity() {
                 mainFragment = AlarmFragment()
             }
             R.id.navigation_stopwatch -> {
-
+                mainFragment = StopwatchFragment()
             }
             R.id.navigation_timer -> {
-
+                mainFragment = TimerFragment()
             }
             else -> false
         }

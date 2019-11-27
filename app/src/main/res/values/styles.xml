@@ -24,6 +24,18 @@
         <item name="android:layout_margin">20dp</item>
         <item name="android:padding">20dp</item>
         <item name="android:background">@drawable/btn_theme_color</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="button_gray_color">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:background">@drawable/btn_gray_color</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
     </style>
 
 </resources>
