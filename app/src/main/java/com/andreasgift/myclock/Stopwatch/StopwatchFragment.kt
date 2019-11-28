@@ -4,12 +4,10 @@ package com.andreasgift.myclock.Stopwatch
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
 import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.fragment_stopwatch.*
 import kotlinx.android.synthetic.main.fragment_stopwatch.view.*
@@ -29,13 +27,15 @@ class StopwatchFragment : Fragment() {
     private val startButtonListener = View.OnClickListener {
         startTime = SystemClock.uptimeMillis()
         handler.postDelayed(runnable, 0)
-        reset_button.isEnabled = false
+        stop_button.isEnabled = true
+        start_button.isEnabled = false
     }
 
     private val stopButtonListener = View.OnClickListener {
         handler.removeCallbacks(runnable)
         timeBuff += milisecondTime
-        reset_button.isEnabled = true
+        stop_button.isEnabled = false
+        start_button.isEnabled = false
     }
 
     private val resetButtonListener = View.OnClickListener {
@@ -46,7 +46,8 @@ class StopwatchFragment : Fragment() {
         millisecond = 0
         minutes = 0
 
-        stopwatch_tv.setText("00:00:00")
+        start_button.isEnabled = true
+        stopwatch_tv.text = "00:00:000"
     }
 
     override fun onCreateView(
@@ -55,19 +56,25 @@ class StopwatchFragment : Fragment() {
     ): View? {
         runnable = object : Runnable {
             override fun run() {
+
                 milisecondTime = SystemClock.uptimeMillis() - startTime
 
                 updateTime = timeBuff + milisecondTime
 
                 seconds = (updateTime / 1000).toInt()
 
-                minutes = seconds / 60;
+                minutes = seconds / 60
 
-                seconds = seconds % 60;
+                seconds = seconds % 60
 
                 millisecond = (updateTime % 1000).toInt()
 
-                stopwatch_tv.setText(String.format("%02d:%02d:%03d", minutes, seconds, millisecond))
+                stopwatch_tv.text = String.format(
+                    "%02d:%02d:%03d",
+                    minutes,
+                    seconds,
+                    millisecond
+                )
 
                 handler.postDelayed(runnable, 0)
             }
