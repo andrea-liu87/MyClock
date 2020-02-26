@@ -14,5 +14,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
+    <string name="menu_about">About</string>
 
+    <string name="support_message">If you like this app, please support us :</string>
+    <string name="donate">Donate</string>
+    <string name="ok">OK</string>
+    <string name="app_credit">Created by Andrea\'sGift 2020</string>
 </resources>
