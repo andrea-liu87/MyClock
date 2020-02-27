@@ -23,37 +23,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00:000"
-            android:textSize="56sp"
+            android:padding="12dp"
+            android:textSize="72sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.4" />
+            app:layout_constraintVertical_bias="0.3" />
 
         <Button
             android:id="@+id/start_button"
             style="@style/button_gray_color"
             android:layout_width="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="8dp"
             android:text="Start"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/stopwatch_tv"
-            app:layout_constraintVertical_bias="0.22" />
+            app:layout_constraintStart_toStartOf="@+id/stopwatch_tv"
+            app:layout_constraintTop_toBottomOf="@+id/stopwatch_tv"
+            app:layout_constraintVertical_bias="0.3" />
 
         <Button
             android:id="@+id/stop_button"
             style="@style/button_gray_color"
             android:layout_width="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="24dp"
             android:text="Stop"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
             app:layout_constraintBottom_toBottomOf="@id/start_button"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/stopwatch_tv"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="@id/start_button" />
 
@@ -62,10 +59,11 @@
             style="@style/button_gray_color"
             android:layout_width="0dp"
             android:layout_marginVertical="24dp"
+            android:layout_marginHorizontal="0dp"
             android:text="Reset"
             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/stop_button"
+            app:layout_constraintStart_toStartOf="@+id/start_button"
             app:layout_constraintTop_toBottomOf="@id/start_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

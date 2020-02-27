@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_timer.view.*
  */
 class TimerFragment : Fragment() {
     lateinit var mview: View
-    lateinit var countDownTimer: CountDownTimer
+    var countDownTimer: CountDownTimer? = null
     lateinit var soundUri: Uri
     lateinit var ringtone: Ringtone
 
@@ -51,11 +51,11 @@ class TimerFragment : Fragment() {
                 mview.minutes_picker.value * 60 * 1000L +
                 mview.hour_picker.value * 60 * 60 * 1000L
         countDownTimer = countdownTimer(milisecondsTime)
-        countDownTimer.start()
+        countDownTimer?.start()
     }
 
     private val resetListener = View.OnClickListener {
-        countDownTimer.cancel()
+        countDownTimer?.cancel()
     }
 
     private fun countdownTimer(milisSecond: Long): CountDownTimer {
@@ -98,7 +98,7 @@ class TimerFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        countDownTimer.cancel()
+        countDownTimer?.cancel()
         mview.hour_picker.value = 0
         mview.minutes_picker.value = 0
         mview.second_picker.value = 0

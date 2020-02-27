@@ -91,9 +91,9 @@ class EditAlarmFragment : DialogFragment() {
             view.time_picker.hour,
             view.time_picker.minute,
             view.time_picker.hour < 12,
-            alarmToggleGetData(view),
+            alarmRepeatScheduleList(view),
             true,
-            view.label_et.text.toString() ?: "",
+            view.label_et.text.toString(),
             (0..10000).random()
         )
         alarmViewModel.insertAlarm(newAlarm)
@@ -106,7 +106,7 @@ class EditAlarmFragment : DialogFragment() {
         alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity())
     }
 
-    private fun alarmToggleGetData(view: View): ArrayList<Int>? {
+    private fun alarmRepeatScheduleList(view: View): ArrayList<Int>? {
         val arrayList = arrayListOf<Int>()
         if (view.mon_button.isChecked) {
             arrayList.add(Calendar.MONDAY)

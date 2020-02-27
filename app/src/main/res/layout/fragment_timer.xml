@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,34 +9,39 @@
     tools:context=".Timer.TimerFragment">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="96dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3">
 
         <NumberPicker
             android:id="@+id/hour_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
+            android:scaleX="2.5"
+            android:scaleY="2.5"
             android:showDividers="end|beginning" />
 
         <NumberPicker
             android:id="@+id/minutes_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
+            android:scaleX="2.5"
+            android:scaleY="2.5"
             android:showDividers="end" />
 
         <NumberPicker
             android:id="@+id/second_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleX="1.5"
-            android:scaleY="1.5"
+            android:scaleX="2.5"
+            android:scaleY="2.5"
             android:showDividers="end" />
     </LinearLayout>
 
@@ -43,8 +49,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="36dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.3">
 
         <Button
             android:id="@+id/start_button"
@@ -60,4 +70,4 @@
             android:layout_height="wrap_content"
             android:text="@string/stop" />
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
