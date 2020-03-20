@@ -48,7 +48,7 @@ class CountryListFragment : DialogFragment() {
             countryList
         )
         view.city_list.adapter = mAdapter
-        view.city_list.setOnItemClickListener { adapterView, view, i, l ->
+        view.city_list.setOnItemClickListener { _, view, i, l ->
             timezone = mAdapter.getItem(i)!!
         }
         view.city_filter.addTextChangedListener {

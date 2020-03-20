@@ -5,4 +5,6 @@ class Constants {
     val PREF_KEY_MANUAL_CLOCK = "pref-key-manualordigital"
 
     val ALARM_LABEL_KEY = "alarm-label"
+
+    val ALARM_ID = "alarm-id"
 }

@@ -5,21 +5,22 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
 import com.andreasgift.myclock.AlarmData.AlarmViewModel
 import com.andreasgift.myclock.Helper.putArgs
 import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.fragment_alarm_edit.view.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 import java.util.*
 
 private const val ALARM_KEY = "alarmKey"
 
 class EditAlarmFragment : DialogFragment() {
     private var alarm: Alarm? = null
-    private lateinit var alarmViewModel: AlarmViewModel
+    val alarmViewModel: AlarmViewModel by sharedViewModel<AlarmViewModel>()
 
     companion object {
         fun newInstance(alarm: Alarm? = null) = EditAlarmFragment().putArgs {
@@ -30,11 +31,6 @@ class EditAlarmFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         alarm = arguments?.getSerializable(ALARM_KEY) as Alarm?
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel::class.java)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -97,13 +93,26 @@ class EditAlarmFragment : DialogFragment() {
             (0..10000).random()
         )
         alarmViewModel.insertAlarm(newAlarm)
+        Log.d("alarm id : ", newAlarm.id.toString() + " is added")
         newAlarm.setAlarmScheduleOn(this.requireActivity())
     }
 
     @TargetApi(23)
     private fun updateAlarm(view: View, alarm: Alarm) {
-        alarmViewModel.updateAlarm(alarm)
-        alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity())
+        alarm.setAlarmScheduleOff(this.requireActivity())
+        val updatedAlarm = Alarm(
+            view.time_picker.hour,
+            view.time_picker.minute,
+            view.time_picker.hour < 12,
+            alarmRepeatScheduleList(view),
+            true,
+            view.label_et.text.toString(),
+            alarm.id
+        )
+        alarmViewModel.updateAlarm(updatedAlarm)
+        updateUi(view, updatedAlarm)
+        Log.d("alarm id : ", alarm.id.toString() + " is updated")
+        updatedAlarm.setAlarmScheduleOn(this.requireActivity())
     }
 
     private fun alarmRepeatScheduleList(view: View): ArrayList<Int>? {

@@ -33,7 +33,7 @@ class AlarmRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: AlarmViewHolder, position: Int) {
         val alarm = alarmList!!.get(position)
-        holder.itemView.label_alarm_tv.setText(alarm.label)
+        holder.itemView.label_alarm_tv.text = alarm.label
         holder.itemView.alarm_switch.isChecked = alarm.isOn
         holder.itemView.alarm_switch.setOnCheckedChangeListener { switch, ischecked ->
             alarm.isOn = ischecked
@@ -72,7 +72,7 @@ class AlarmRecyclerViewAdapter(
                 holder.itemView.sat_button.isChecked = true
             }
             if (it.contains(Calendar.SUNDAY)) {
-                holder.itemView.sat_button.isChecked = true
+                holder.itemView.sun_button.isChecked = true
             }
         }
     }
@@ -96,20 +96,16 @@ class AlarmRecyclerViewAdapter(
         holder: AlarmViewHolder
     ) {
         if (alarm.isAM) {
-            holder.itemView.alarm_tv.setText(
-                String.format(
-                    "%02d:%02d AM",
-                    alarm.alarmHour,
-                    alarm.alarmMin
-                )
+            holder.itemView.alarm_tv.text = String.format(
+                "%02d:%02d AM",
+                alarm.alarmHour,
+                alarm.alarmMin
             )
         } else {
-            holder.itemView.alarm_tv.setText(
-                String.format(
-                    "%02d:%02d PM",
-                    alarm.alarmHour % 12,
-                    alarm.alarmMin
-                )
+            holder.itemView.alarm_tv.text = String.format(
+                "%02d:%02d PM",
+                alarm.alarmHour % 12,
+                alarm.alarmMin
             )
         }
     }

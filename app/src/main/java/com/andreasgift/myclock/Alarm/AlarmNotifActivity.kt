@@ -4,50 +4,64 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
+import android.media.Ringtone
 import android.media.RingtoneManager
-import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.andreasgift.myclock.Helper.Constants
 import com.andreasgift.myclock.R
 import kotlinx.android.synthetic.main.activity_alarm_notif.*
 
 class AlarmNotifActivity : AppCompatActivity() {
-    private val snoozeTiming = 600000L
+    private val snoozeTiming = 300000L
 
-    private var label: String? = null
-    private lateinit var mMediaPlayer: MediaPlayer
+    private var label: String = ""
+    private var ringtone: Ringtone? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alarm_notif)
 
+        wakeScreen()
+
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        ringtone = RingtoneManager.getRingtone(this@AlarmNotifActivity, soundUri)
+
         intent.getStringExtra(Constants().ALARM_LABEL_KEY)?.let {
             label = it
-            this.label_tv.setText(label)
+            this.label_tv.text = label
         }
-        playSound(soundUri)
+        playSound()
     }
 
-    fun dismissButton(view: View) {
+    private fun wakeScreen() {
+        val window = window
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
+                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        )
+    }
+
+    fun dismissButton() {
         stopSound()
         finish()
     }
 
-    fun snoozeButton(view: View) {
+    fun snoozeButton() {
         val alarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val nextintent = Intent(this, AlarmReceiver::class.java)
-        label?.let { intent.putExtra(Constants().ALARM_LABEL_KEY, label) }
+        intent.putExtra(Constants().ALARM_LABEL_KEY, label)
         val pendingIntent = PendingIntent.getBroadcast(
             this@AlarmNotifActivity,
             0,
             nextintent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-        alarmManager.set(
+        alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
             System.currentTimeMillis() + snoozeTiming,
             pendingIntent
@@ -56,21 +70,16 @@ class AlarmNotifActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun playSound(uri: Uri) {
-        mMediaPlayer = MediaPlayer.create(this@AlarmNotifActivity, uri)
-        mMediaPlayer.isLooping = true
-        mMediaPlayer.start()
+    private fun playSound() {
+        if (Build.VERSION.SDK_INT >= 28) {
+            ringtone?.isLooping = true
+        }
+        ringtone?.play()
     }
 
     private fun stopSound() {
-        mMediaPlayer?.let {
-            it.stop()
-            it.release()
+        if (ringtone!!.isPlaying) {
+            ringtone?.stop()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        stopSound()
     }
 }

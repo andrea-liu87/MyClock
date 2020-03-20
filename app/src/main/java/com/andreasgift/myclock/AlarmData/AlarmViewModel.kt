@@ -1,21 +1,19 @@
 package com.andreasgift.myclock.AlarmData
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andreasgift.myclock.Alarm.Alarm
 import kotlinx.coroutines.launch
 
-class AlarmViewModel(application: Application) : AndroidViewModel(application) {
+class AlarmViewModel(val alarmRepository: AlarmRepository) : ViewModel() {
 
     private val alarmRepo: AlarmRepository
 
     val allAlarmData: LiveData<List<Alarm>>
 
     init {
-        val alarmDao = AlarmROOMDatabase.getDatabase(application).alarmDao()
-        alarmRepo = AlarmRepository(alarmDao)
+        alarmRepo = alarmRepository
         allAlarmData = alarmRepo.allAlarmData
     }
 
@@ -33,5 +31,13 @@ class AlarmViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateAlarm(alarm: Alarm) = viewModelScope.launch {
         alarmRepo.updateAlarm(alarm)
+    }
+
+    fun getAlarm(id: Int): LiveData<Alarm>? {
+        var alarm: LiveData<Alarm>? = null
+        viewModelScope.launch {
+            alarm = alarmRepo.getAlarm(id)
+        }
+        return alarm
     }
 }

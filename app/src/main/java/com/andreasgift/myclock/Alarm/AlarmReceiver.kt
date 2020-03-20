@@ -1,11 +1,13 @@
 package com.andreasgift.myclock.Alarm
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.media.AudioAttributes
-import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -13,25 +15,27 @@ import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.andreasgift.myclock.Helper.Constants
+import com.andreasgift.myclock.MainActivity
+import org.koin.core.KoinComponent
 
 
-class AlarmReceiver : BroadcastReceiver() {
-    private val snoozeTiming = 600000L
+class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private val CHANNEL_ID = "notification-channel-id"
     private val NOTIFICATION_ID = 1254
-    private var label = ""
+    private var label: String? = ""
 
-    private lateinit var ringtone: Ringtone
     private lateinit var soundUri: Uri
+    private var alarmId: Int = 0
 
     override fun onReceive(context: Context, intent: Intent) {
-        label = intent.getStringExtra(Constants().ALARM_LABEL_KEY)
+        label = intent.getStringExtra(Constants().ALARM_LABEL_KEY) ?: ""
         soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+        alarmId = intent.getIntExtra(Constants().ALARM_ID, 0)
 
         val mPowerManager = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         if (mPowerManager.isInteractive) {
             createNotificationChannel(context)
-            val builder = createNotificationBuilder(context, label)
+            val builder = createNotificationBuilder(context, label!!)
             val notification = builder.build()
             notification.flags = Notification.FLAG_INSISTENT
             notification.flags = Notification.FLAG_NO_CLEAR
@@ -49,20 +53,21 @@ class AlarmReceiver : BroadcastReceiver() {
 
     fun createNotificationBuilder(
         context: Context,
-        content: String = ""
+        alarmLabel: String = ""
     ): NotificationCompat.Builder {
         val notificationBuiler = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-            .setStyle(NotificationCompat.BigTextStyle().bigText(content))
+            .setStyle(NotificationCompat.BigTextStyle().bigText(alarmLabel))
             .setContentTitle(context.getString(com.andreasgift.myclock.R.string.app_name))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setOngoing(true)
             .setSound(soundUri)
+            .setContentIntent(getContentIntent(context))
             .addAction(
                 android.R.drawable.ic_lock_idle_alarm,
                 "SNOOZE",
-                snoozeButtonPendingIntent(context, content)
+                snoozeButtonPendingIntent(context, alarmLabel)
             )
             .addAction(
                 android.R.drawable.ic_menu_close_clear_cancel,
@@ -70,6 +75,14 @@ class AlarmReceiver : BroadcastReceiver() {
                 dismissPendingIntent(context)
             )
         return notificationBuiler
+    }
+
+    private fun getContentIntent(context: Context): PendingIntent? {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
+        return pendingIntent
     }
 
     private fun createNotificationChannel(context: Context) {
@@ -90,19 +103,14 @@ class AlarmReceiver : BroadcastReceiver() {
     }
 
     private fun snoozeButtonPendingIntent(context: Context, label: String): PendingIntent {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val nextintent = Intent(context, AlarmReceiver::class.java)
-        nextintent.putExtra(Constants().ALARM_LABEL_KEY, label)
-        val pendingIntent = PendingIntent.getBroadcast(
+        val alarmIntent = Intent(context, SnoozeService::class.java)
+        alarmIntent.putExtra(Constants().ALARM_LABEL_KEY, label)
+        alarmIntent.putExtra("notification_id", NOTIFICATION_ID)
+        val pendingIntent = PendingIntent.getService(
             context,
-            21,
-            nextintent,
+            0,
+            alarmIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            System.currentTimeMillis() + snoozeTiming,
-            pendingIntent
         )
         return pendingIntent
     }

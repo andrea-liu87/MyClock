@@ -8,4 +8,28 @@
     <dimen name="timer_spinner_margin_left_right">72dp</dimen>
     <dimen name="label_text_size">16sp</dimen>
     <dimen name="instructions_text_size">15sp</dimen>
+
+    <dimen name="text_size">12sp</dimen>
+    <dimen name="text_size_header">16sp</dimen>
+    <dimen name="text_size_big">25sp</dimen>
+    <dimen name="text_size_title">21sp</dimen>
+
+    <!--Offsets-->
+    <dimen name="offset_min">2dp</dimen>
+    <dimen name="offset_tiny">4dp</dimen>
+    <dimen name="offset_small">8dp</dimen>
+    <dimen name="offset_medium">12dp</dimen>
+    <dimen name="offset_regular">16dp</dimen>
+    <dimen name="offset_large">24dp</dimen>
+    <dimen name="offset_huge">32dp</dimen>
+
+    <!--Text Sizes-->
+    <dimen name="text_size_8">8sp</dimen>
+    <dimen name="text_size_10">10sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+
+    <dimen name="toolbar_height">42dp</dimen>
 </resources>

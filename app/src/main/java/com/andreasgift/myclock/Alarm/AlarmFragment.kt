@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.andreasgift.myclock.AlarmData.AlarmViewModel
 import com.andreasgift.myclock.Clock.SwipeCallback
 import kotlinx.android.synthetic.main.fragment_alarm.view.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
@@ -21,12 +21,7 @@ class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
     private lateinit var recyclerView: RecyclerView
     private lateinit var viewAdapter: AlarmRecyclerViewAdapter
 
-    private lateinit var alarmViewModel: AlarmViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        alarmViewModel = ViewModelProviders.of(this).get(AlarmViewModel::class.java)
-    }
+    val alarmViewModel: AlarmViewModel by viewModel<AlarmViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,7 +67,7 @@ class AlarmFragment : Fragment(), AlarmRecyclerViewAdapter.switchHandler {
 
     override fun updateAlarmData(alarm: Alarm) {
         alarmViewModel.updateAlarm(alarm)
-        alarm.setAlarmSchOnOff(alarm.isOn, this.requireActivity())
+        alarm.setAlarmScheduleOn(requireActivity())
     }
 
     val fabListener = View.OnClickListener {

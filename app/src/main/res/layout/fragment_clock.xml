@@ -9,7 +9,7 @@
         android:id="@+id/clock_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="@dimen/offset_small"
         android:text="@string/manual_switch_label"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/add_clock_fab"
-        android:layout_margin="12dp"
+        android:layout_margin="@dimen/offset_medium"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintRight_toRightOf="parent"

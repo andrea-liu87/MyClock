@@ -20,4 +20,7 @@ interface AlarmDao {
 
     @Update
     suspend fun update(alarm: Alarm)
+
+    @Query("SELECT * FROM alarm_data_table WHERE id = :id")
+    fun getAlarm(id: Int): LiveData<Alarm>
 }
