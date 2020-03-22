@@ -5,7 +5,7 @@
 
 MinSDKVersion : 21
 </br>Development Tool : Android Studio Library
-</br>Library : androidx-ROOM, [ClockView](https://github.com/arbelkilani/Clock-view)
+</br>Library : androidx-ROOM, [ClockView](https://github.com/arbelkilani/Clock-view), [Koin](https://insert-koin.io/)
 </br>Programming languange : Kotlin
 
 Tested Device :
