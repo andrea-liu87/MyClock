@@ -36,7 +36,11 @@ class AlarmRecyclerViewAdapter(
         holder.itemView.label_alarm_tv.text = alarm.label
         holder.itemView.alarm_switch.isChecked = alarm.isOn
         holder.itemView.alarm_switch.setOnCheckedChangeListener { switch, ischecked ->
-            alarm.isOn = ischecked
+            if (alarm.isOn) {
+                switch.isChecked
+            } else {
+                !switch.isChecked
+            }
             mSwitchHandler.updateAlarmData(alarm)
         }
         setTimeText(alarm, holder)

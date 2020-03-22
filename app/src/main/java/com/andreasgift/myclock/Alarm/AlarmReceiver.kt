@@ -14,12 +14,14 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.andreasgift.myclock.AlarmData.AlarmViewModel
 import com.andreasgift.myclock.Helper.Constants
 import com.andreasgift.myclock.MainActivity
 import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 
-class AlarmReceiver : BroadcastReceiver(), KoinComponent {
+class AlarmReceiver : BroadcastReceiver() {
     private val CHANNEL_ID = "notification-channel-id"
     private val NOTIFICATION_ID = 1254
     private var label: String? = ""
@@ -118,6 +120,7 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
     private fun dismissPendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, dismissAlarmReceiver::class.java)
         intent.putExtra("notification_id", NOTIFICATION_ID)
+        intent.putExtra(Constants().ALARM_ID, alarmId)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             15,
@@ -127,12 +130,20 @@ class AlarmReceiver : BroadcastReceiver(), KoinComponent {
         return pendingIntent
     }
 
-    class dismissAlarmReceiver : BroadcastReceiver() {
+    class dismissAlarmReceiver : BroadcastReceiver(), KoinComponent {
         override fun onReceive(context: Context, intent: Intent) {
             val id = intent.getIntExtra("notification_id", 1254)
+            val alarmId = intent.getIntExtra(Constants().ALARM_ID, 0)
             val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.cancel(id)
+
+            if (alarmId > 0) {
+                val alarmViewModel: AlarmViewModel by inject<AlarmViewModel>()
+                val allData = alarmViewModel.allAlarmData.value
+                val alarm: Alarm? = allData?.find { it.id == alarmId }
+                alarm?.setAlarmScheduleOff(context)
+            }
         }
     }
 }

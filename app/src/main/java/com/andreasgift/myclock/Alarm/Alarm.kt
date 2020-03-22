@@ -47,6 +47,9 @@ class Alarm(
         } ?: run {
             setOneTimeAlarm(activity)
         }
+        if (!isOn) {
+            isOn = true
+        }
     }
 
     fun setAlarmScheduleOff(activity: Context) {
@@ -61,10 +64,13 @@ class Alarm(
             val alarmIntent = createAlarmPendingIntent(activity, id)
             alarmManager.cancel(alarmIntent)
         }
+        if (isOn) {
+            isOn = false
+        }
     }
 
     private fun setRepeatingAlarm(dayOfWeek: Int, context: Context) {
-        Log.d("setRepeatingAlarm : ", dayOfWeek.toString())
+        Log.d("alarm id : repeating al", dayOfWeek.toString())
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val calendar = createCalendarAlarm(dayOfWeek)
 
