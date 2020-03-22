@@ -11,8 +11,8 @@ MinSDKVersion : 21
 Tested Device :
 </br> Nexus 5 API 23
   
-Version : 1
-</br>Version Code : 1.0.0
+Version : 2
+</br>Version Code : 1.0.1
 
 ![Screenshoot](https://github.com/snufflesrea/MyClock/blob/master/SS1.png)
 ![Screenshoot](https://github.com/snufflesrea/MyClock/blob/master/SS2.png)
