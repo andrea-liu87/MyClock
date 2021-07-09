@@ -1,36 +1,34 @@
 package com.andreasgift.myclock.DI
 
 import android.app.Application
-import com.andreasgift.myclock.AlarmData.AlarmROOMDatabase
-import com.andreasgift.myclock.AlarmData.AlarmRepository
-import com.andreasgift.myclock.AlarmData.AlarmRepositoryImpl
-import com.andreasgift.myclock.AlarmData.AlarmViewModel
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.android.viewmodel.dsl.viewModel
-import org.koin.core.context.startKoin
-import org.koin.dsl.module
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
+import com.andreasgift.myclock.Helper.Constants
+import com.dci.dev.ktimber.KTimber
+import dagger.hilt.android.HiltAndroidApp
 
+
+@HiltAndroidApp
 class MyClockApplication : Application() {
-
-    val appModule = module {
-        // instantiate AlarmDAO
-        single { AlarmROOMDatabase.getDatabase(this@MyClockApplication).alarmDao() }
-
-        // instantiate AlarmRepositoryImpl
-        single<AlarmRepository> { AlarmRepositoryImpl(get()) }
-
-        // get AlarmViewModel
-        viewModel { AlarmViewModel(get()) }
-    }
 
     override fun onCreate() {
         super.onCreate()
-        // Start Koin
-        startKoin {
-            androidLogger()
-            androidContext(this@MyClockApplication)
-            modules(appModule)
+        createNotificationChannnel()
+        KTimber.startWithFileLogger(this.applicationContext)
+    }
+
+    private fun createNotificationChannnel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = NotificationChannel(
+                Constants.CHANNEL_ID,
+                "Alarm Service Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val manager = getSystemService(
+                NotificationManager::class.java
+            )
+            manager.createNotificationChannel(serviceChannel)
         }
     }
 }

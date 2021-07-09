@@ -10,14 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_timer.view.*
+import com.andreasgift.myclock.databinding.FragmentTimerBinding
 
 
 /**
  * A simple [Fragment] subclass.
  */
 class TimerFragment : Fragment() {
-    lateinit var mview: View
+    private var _binding: FragmentTimerBinding? = null
+    private val binding get() = _binding!!
+
     var countDownTimer: CountDownTimer? = null
     lateinit var soundUri: Uri
     lateinit var ringtone: Ringtone
@@ -26,30 +28,31 @@ class TimerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mview = inflater.inflate(com.andreasgift.myclock.R.layout.fragment_timer, container, false)
+        _binding = FragmentTimerBinding.inflate(layoutInflater, container, false)
+        val mview = binding.root
         soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         ringtone = RingtoneManager.getRingtone(this.activity, soundUri)
         ringtone.isLooping = true
 
-        mview.hour_picker.minValue = 0
-        mview.hour_picker.maxValue = 3
+        binding.hourPicker.minValue = 0
+        binding.hourPicker.maxValue = 3
 
-        mview.minutes_picker.minValue = 0
-        mview.minutes_picker.maxValue = 60
+        binding.minutesPicker.minValue = 0
+        binding.minutesPicker.maxValue = 60
 
-        mview.second_picker.minValue = 0
-        mview.second_picker.maxValue = 60
+        binding.secondPicker.minValue = 0
+        binding.secondPicker.maxValue = 60
 
-        mview.start_button.setOnClickListener(startListener)
-        mview.stop_button.setOnClickListener(resetListener)
+        binding.startButton.setOnClickListener(startListener)
+        binding.stopButton.setOnClickListener(resetListener)
 
         return mview
     }
 
     private val startListener = View.OnClickListener {
-        val milisecondsTime = mview.second_picker.value * 1000L +
-                mview.minutes_picker.value * 60 * 1000L +
-                mview.hour_picker.value * 60 * 60 * 1000L
+        val milisecondsTime = binding.secondPicker.value * 1000L +
+                binding.minutesPicker.value * 60 * 1000L +
+                binding.hourPicker.value * 60 * 60 * 1000L
         countDownTimer = countdownTimer(milisecondsTime)
         countDownTimer?.start()
     }
@@ -65,20 +68,20 @@ class TimerFragment : Fragment() {
                 val updateTime = millisUntilFinished.toInt() / 1000
 
                 val hour = updateTime / 3600
-                mview.hour_picker.value = hour
+                binding.hourPicker.value = hour
 
                 val minutes = (updateTime % 3600) / 60
-                mview.minutes_picker.value = minutes
+                binding.minutesPicker.value = minutes
 
                 val seconds = updateTime % 60
-                mview.second_picker.value = seconds
+                binding.secondPicker.value = seconds
             }
 
             override fun onFinish() {
                 timerForRingtone().start()
-                mview.hour_picker.value = 0
-                mview.minutes_picker.value = 0
-                mview.second_picker.value = 0
+                binding.hourPicker.value = 0
+                binding.minutesPicker.value = 0
+                binding.secondPicker.value = 0
             }
         }
         return timer
@@ -99,9 +102,9 @@ class TimerFragment : Fragment() {
 
     override fun onDestroy() {
         countDownTimer?.cancel()
-        mview.hour_picker.value = 0
-        mview.minutes_picker.value = 0
-        mview.second_picker.value = 0
+        binding.hourPicker.value = 0
+        binding.minutesPicker.value = 0
+        binding.secondPicker.value = 0
         super.onDestroy()
     }
 }

@@ -20,13 +20,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3">
 
+        <View style="@style/picker_divider" />
+
         <NumberPicker
             android:id="@+id/hour_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:scaleX="2.5"
-            android:scaleY="2.5"
-            android:showDividers="end|beginning" />
+            android:scaleY="2.5" />
+
+        <View style="@style/picker_divider" />
 
         <NumberPicker
             android:id="@+id/minutes_picker"
@@ -36,13 +41,19 @@
             android:scaleY="2.5"
             android:showDividers="end" />
 
+        <View style="@style/picker_divider" />
+
         <NumberPicker
             android:id="@+id/second_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:scaleX="2.5"
             android:scaleY="2.5"
             android:showDividers="end" />
+
+        <View style="@style/picker_divider" />
     </LinearLayout>
 
     <LinearLayout

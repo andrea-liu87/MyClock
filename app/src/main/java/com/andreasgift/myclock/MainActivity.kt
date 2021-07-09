@@ -3,60 +3,35 @@ package com.andreasgift.myclock
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.andreasgift.myclock.About.AboutDialog
-import com.andreasgift.myclock.Alarm.AlarmFragment
-import com.andreasgift.myclock.Clock.ClockFragment
-import com.andreasgift.myclock.Stopwatch.StopwatchFragment
-import com.andreasgift.myclock.Timer.TimerFragment
+import com.andreasgift.myclock.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        if (savedInstanceState == null) {
-            setFragment(ClockFragment())
-        }
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        toolbar.setOnMenuItemClickListener(toolBarListener)
-        navigation.setOnNavigationItemSelectedListener(navigationListener)
-    }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-    private fun setFragment(fragment: Fragment) {
-        if (fragment_container == null) {
-            supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment)
-                .commit()
-        } else {
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container, fragment)
-                .commit()
-        }
+        binding.toolbar.setOnMenuItemClickListener(toolBarListener)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
+        val navController = navHostFragment.navController
+        findViewById<BottomNavigationView>(R.id.btm_nav).setupWithNavController(navController)
     }
 
     val toolBarListener = Toolbar.OnMenuItemClickListener {
         when (it.itemId) {
             R.id.about -> {
                 AboutDialog().show(supportFragmentManager, "about_dialog")
-            }
-        }
-        true
-    }
-
-    val navigationListener = BottomNavigationView.OnNavigationItemSelectedListener {
-        when (it.itemId) {
-            R.id.navigation_clock -> {
-                setFragment(ClockFragment())
-            }
-            R.id.navigation_alarm -> {
-                setFragment(AlarmFragment())
-            }
-            R.id.navigation_stopwatch -> {
-                setFragment(StopwatchFragment())
-            }
-            R.id.navigation_timer -> {
-                setFragment(TimerFragment())
             }
         }
         true

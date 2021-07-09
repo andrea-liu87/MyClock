@@ -1,79 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:orientation="vertical"
-    android:padding="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TimePicker
-        android:id="@+id/time_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:timePickerMode="spinner" />
+    <data>
 
+        <variable
+            name="alarmdata"
+            type="com.andreasgift.myclock.alarm.Alarm" />
+
+        <import type="com.andreasgift.myclock.BindingAdapter" />
+    </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_tiny"
-        android:layout_marginBottom="@dimen/offset_tiny"
-        android:orientation="horizontal">
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
 
-        <ToggleButton
-            android:id="@+id/sun_button"
-            style="@style/toggle_button_day"
-            android:textOff="S"
-            android:textOn="S" />
+        <TimePicker
+            android:id="@+id/time_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:timePickerMode="spinner"
+            app:setTimePicker="@{alarmdata}" />
 
-        <ToggleButton
-            android:id="@+id/mon_button"
-            style="@style/toggle_button_day"
-            android:textOff="M"
-            android:textOn="M" />
 
-        <ToggleButton
-            android:id="@+id/tue_button"
-            style="@style/toggle_button_day"
-            android:textOff="T"
-            android:textOn="T" />
-
-        <ToggleButton
-            android:id="@+id/wed_button"
-            style="@style/toggle_button_day"
-            android:textOff="W"
-            android:textOn="W" />
-
-        <ToggleButton
-            android:id="@+id/thu_button"
-            style="@style/toggle_button_day"
-            android:textOff="T"
-            android:textOn="T" />
-
-        <ToggleButton
-            android:id="@+id/fri_button"
-            style="@style/toggle_button_day"
-            android:textOff="F"
-            android:textOn="F" />
-
-        <ToggleButton
-            android:id="@+id/sat_button"
-            style="@style/toggle_button_day"
-            android:textOff="S"
-            android:textOn="S" />
-
-    </LinearLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/label_et"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Alarm Label"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-    </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+            android:layout_marginTop="@dimen/offset_tiny"
+            android:layout_marginBottom="@dimen/offset_tiny"
+            android:orientation="horizontal">
+
+            <ToggleButton
+                android:id="@+id/sun_button"
+                style="@style/toggle_button_day"
+                android:textOff="S"
+                android:textOn="S"
+                app:setDay="@{alarmdata.days.contains(1)}" />
+
+            <ToggleButton
+                android:id="@+id/mon_button"
+                style="@style/toggle_button_day"
+                android:textOff="M"
+                android:textOn="M"
+                app:setDay="@{alarmdata.days.contains(2)}" />
+
+            <ToggleButton
+                android:id="@+id/tue_button"
+                style="@style/toggle_button_day"
+                android:textOff="T"
+                android:textOn="T"
+                app:setDay="@{alarmdata.days.contains(3)}" />
+
+            <ToggleButton
+                android:id="@+id/wed_button"
+                style="@style/toggle_button_day"
+                android:textOff="W"
+                android:textOn="W"
+                app:setDay="@{alarmdata.days.contains(4)}" />
+
+            <ToggleButton
+                android:id="@+id/thu_button"
+                style="@style/toggle_button_day"
+                android:textOff="T"
+                android:textOn="T"
+                app:setDay="@{alarmdata.days.contains(5)}" />
+
+            <ToggleButton
+                android:id="@+id/fri_button"
+                style="@style/toggle_button_day"
+                android:textOff="F"
+                android:textOn="F"
+                app:setDay="@{alarmdata.days.contains(6)}" />
+
+            <ToggleButton
+                android:id="@+id/sat_button"
+                style="@style/toggle_button_day"
+                android:textOff="S"
+                android:textOn="S"
+                app:setDay="@{alarmdata.days.contains(7)}" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/label_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Alarm Label"
+                android:text='@{alarmdata.label != null ? alarmdata.label : ""}'
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+</layout>

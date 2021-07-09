@@ -1,21 +1,17 @@
-package com.andreasgift.myclock.AlarmData
+package com.andreasgift.myclock.alarmdata
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.andreasgift.myclock.Alarm.Alarm
+import com.andreasgift.myclock.alarm.Alarm
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AlarmViewModel(val alarmRepository: AlarmRepository) : ViewModel() {
-
-    private val alarmRepo: AlarmRepository
-
-    val allAlarmData: LiveData<List<Alarm>>
-
-    init {
-        alarmRepo = alarmRepository
-        allAlarmData = alarmRepo.allAlarmData
-    }
+@HiltViewModel
+class AlarmViewModel @Inject constructor(private val alarmRepo: AlarmRepository) : ViewModel() {
+    val allAlarmData: LiveData<List<Alarm>> = alarmRepo.allAlarmData.asLiveData()
 
     fun insertAlarm(alarm: Alarm) = viewModelScope.launch {
         alarmRepo.insertAlarm(alarm)
@@ -39,5 +35,11 @@ class AlarmViewModel(val alarmRepository: AlarmRepository) : ViewModel() {
             alarm = alarmRepo.getAlarm(id)
         }
         return alarm
+    }
+
+    fun turnOffAlarm(id: Int) {
+        viewModelScope.launch {
+            alarmRepo.turnOffAlarm(id)
+        }
     }
 }

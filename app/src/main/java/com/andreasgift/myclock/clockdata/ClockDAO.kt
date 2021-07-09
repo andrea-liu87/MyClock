@@ -1,14 +1,14 @@
-package com.andreasgift.myclock.ClockData
+package com.andreasgift.myclock.clockdata
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.andreasgift.myclock.Clock.Clock
+import com.andreasgift.myclock.clock.Clock
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ClockDAO {
 
     @Query("SELECT * FROM clock_table_data ORDER BY id ASC")
-    fun getAllClock(): LiveData<List<Clock>>
+    fun getAllClock(): Flow<List<Clock>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertClock(clock: Clock)

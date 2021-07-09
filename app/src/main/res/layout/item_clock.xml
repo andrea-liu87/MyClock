@@ -1,53 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="@dimen/offset_regular"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <FrameLayout
-        android:id="@+id/clock_frame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <data>
 
-        <TextClock
-            android:id="@+id/digital_clock_tv"
+        <variable
+            name="clockdata"
+            type="com.andreasgift.myclock.clock.Clock" />
+
+        <variable
+            name="isAnalog"
+            type="Boolean" />
+
+        <import type="com.andreasgift.myclock.BindingAdapter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/offset_regular"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/clock_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextClock
+                android:id="@+id/digital_clock_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:format12Hour="hh:mm:ss a"
+                android:textSize="56sp"
+                app:setTZ="@{clockdata}"
+                app:visibleOrGone="@{isAnalog}" />
+
+            <com.arbelkilani.clock.Clock
+                android:id="@+id/analog_clock"
+                android:layout_width="wrap_content"
+                android:layout_height="216dp"
+                android:layout_gravity="center"
+                app:center_inner_color="#000000"
+                app:clock_value_disposition="regular"
+                app:clock_value_step="full"
+                app:setTimezone="@{clockdata}"
+                app:show_center="true"
+                app:show_hours_values="true"
+                app:show_seconds_needle="true"
+                app:visibleOrGone="@{!isAnalog}" />
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:format12Hour="hh:mm:ss a"
-            android:textSize="56sp"/>
-
-        <com.arbelkilani.clock.Clock
-            android:id="@+id/analog_clock"
-            android:layout_width="wrap_content"
-            android:layout_height="216dp"
             android:layout_gravity="center"
-            app:center_inner_color="#000000"
-            app:clock_value_disposition="regular"
-            app:clock_value_step="full"
-            app:show_center="true"
-            app:show_hours_values="true"
-            app:show_seconds_needle="true" />
-    </FrameLayout>
+            android:layout_marginTop="@dimen/offset_min"
+            android:textAppearance="?android:textAppearanceLarge"
+            app:setDate="@{clockdata}" />
 
+        <TextView
+            android:id="@+id/country_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/offset_min"
+            android:textAppearance="?android:textAppearanceLarge"
+            app:setCountry="@{clockdata}" />
 
-    <TextView
-        android:id="@+id/date_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_min"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:layout_gravity="center" />
-
-    <TextView
-        android:id="@+id/country_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_min"
-        android:textAppearance="?android:textAppearanceLarge"
-        android:layout_gravity="center" />
-
-</LinearLayout>
+    </LinearLayout>
+</layout>

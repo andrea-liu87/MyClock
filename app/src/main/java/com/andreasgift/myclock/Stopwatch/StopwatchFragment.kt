@@ -8,11 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.andreasgift.myclock.R
-import kotlinx.android.synthetic.main.fragment_stopwatch.*
-import kotlinx.android.synthetic.main.fragment_stopwatch.view.*
+import com.andreasgift.myclock.databinding.FragmentStopwatchBinding
 
 class StopwatchFragment : Fragment() {
+    private var _binding: FragmentStopwatchBinding? = null
+    private val binding get() = _binding!!
+
     private var milisecondTime: Long = 0
     private var startTime: Long = 0
     private var updateTime: Long = 0
@@ -27,15 +28,15 @@ class StopwatchFragment : Fragment() {
     private val startButtonListener = View.OnClickListener {
         startTime = SystemClock.uptimeMillis()
         handler.postDelayed(runnable, 0)
-        stop_button.isEnabled = true
-        start_button.isEnabled = false
+        binding.stopButton.isEnabled = true
+        binding.startButton.isEnabled = false
     }
 
     private val stopButtonListener = View.OnClickListener {
         handler.removeCallbacks(runnable)
         timeBuff += milisecondTime
-        stop_button.isEnabled = false
-        start_button.isEnabled = false
+        binding.stopButton.isEnabled = false
+        binding.startButton.isEnabled = false
     }
 
     private val resetButtonListener = View.OnClickListener {
@@ -46,14 +47,15 @@ class StopwatchFragment : Fragment() {
         millisecond = 0
         minutes = 0
 
-        start_button.isEnabled = true
-        stopwatch_tv.text = "00:00:000"
+        binding.startButton.isEnabled = true
+        binding.stopwatchTv.text = "00:00:000"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentStopwatchBinding.inflate(layoutInflater, container, false)
         runnable = object : Runnable {
             override fun run() {
 
@@ -69,7 +71,7 @@ class StopwatchFragment : Fragment() {
 
                 millisecond = (updateTime % 1000).toInt()
 
-                stopwatch_tv.text = String.format(
+                binding.stopwatchTv.text = String.format(
                     "%02d:%02d:%03d",
                     minutes,
                     seconds,
@@ -80,10 +82,10 @@ class StopwatchFragment : Fragment() {
             }
         }
 
-        val view = inflater.inflate(R.layout.fragment_stopwatch, container, false)
-        view.start_button.setOnClickListener(startButtonListener)
-        view.stop_button.setOnClickListener(stopButtonListener)
-        view.reset_button.setOnClickListener(resetButtonListener)
+        val view = binding.root
+        binding.startButton.setOnClickListener(startButtonListener)
+        binding.stopButton.setOnClickListener(stopButtonListener)
+        binding.resetButton.setOnClickListener(resetButtonListener)
 
         handler = Handler()
         return view

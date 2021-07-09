@@ -1,4 +1,4 @@
-package com.andreasgift.myclock.Clock
+package com.andreasgift.myclock.clock
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

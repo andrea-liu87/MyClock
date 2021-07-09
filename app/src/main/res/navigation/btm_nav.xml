@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/btm_nav"
+    app:startDestination="@id/clockFragment">
+
+    <fragment
+        android:id="@+id/clockFragment"
+        android:name="com.andreasgift.myclock.clock.ClockFragment"
+        android:label="ClockFragment" />
+    <fragment
+        android:id="@+id/alarmFragment"
+        android:name="com.andreasgift.myclock.alarm.AlarmFragment"
+        android:label="AlarmFragment" />
+    <fragment
+        android:id="@+id/stopwatchFragment"
+        android:name="com.andreasgift.myclock.Stopwatch.StopwatchFragment"
+        android:label="fragment_stopwatch"
+        tools:layout="@layout/fragment_stopwatch" />
+    <fragment
+        android:id="@+id/timerFragment"
+        android:name="com.andreasgift.myclock.Timer.TimerFragment"
+        android:label="fragment_timer"
+        tools:layout="@layout/fragment_timer" />
+</navigation>

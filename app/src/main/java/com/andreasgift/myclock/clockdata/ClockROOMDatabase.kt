@@ -1,13 +1,13 @@
-package com.andreasgift.myclock.ClockData
+package com.andreasgift.myclock.clockdata
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.andreasgift.myclock.Clock.Clock
+import com.andreasgift.myclock.clock.Clock
 
 @Database(entities = arrayOf(Clock::class), version = 1)
-public abstract class ClockROOMDatabase : RoomDatabase() {
+abstract class ClockROOMDatabase : RoomDatabase() {
 
     abstract fun clockDao(): ClockDAO
 

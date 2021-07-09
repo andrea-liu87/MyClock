@@ -2,10 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.andreasgift.myclock">
 
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +22,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".Alarm.AlarmNotifActivity"
+            android:name=".alarm.RingActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:showOnLockScreen="true"
@@ -26,20 +31,23 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SET_ALARM" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
-        <receiver android:name=".Alarm.AlarmReceiver" />
-        <receiver android:name=".Alarm.AlarmReceiver$dismissAlarmReceiver" />
+        <receiver android:name=".alarm.AlarmReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".alarm.ActionReceiver" />
 
-        <service android:name=".Alarm.SnoozeService" />
+        <service android:name=".alarm.AlarmService" />
+        <service android:name=".alarm.RescheduleAlarmsService" />
     </application>
 
 </manifest>

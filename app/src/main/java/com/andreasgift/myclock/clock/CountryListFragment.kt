@@ -1,33 +1,34 @@
-package com.andreasgift.myclock.Clock
+package com.andreasgift.myclock.clock
 
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProviders
-import com.andreasgift.myclock.ClockData.ClockViewModel
-import com.andreasgift.myclock.R
-import kotlinx.android.synthetic.main.city_list_dialog.view.*
+import androidx.fragment.app.activityViewModels
+import com.andreasgift.myclock.clockdata.ClockViewModel
+import com.andreasgift.myclock.databinding.CityListDialogBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * Fragment to display country list timezone
  */
+@AndroidEntryPoint
 class CountryListFragment : DialogFragment() {
+    private var _binding: CityListDialogBinding? = null
+    private val binding get() = _binding!!
+
     lateinit var timezone: String
 
-    private lateinit var clockViewModel: ClockViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        clockViewModel = ViewModelProviders.of(this).get(ClockViewModel::class.java)
-    }
+    private val clockViewModel by activityViewModels<ClockViewModel>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): AlertDialog {
         return activity?.let {
+            Log.d("TAG", "POINTN1")
             val builder = buildDialog(requireContext())
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
@@ -41,23 +42,26 @@ class CountryListFragment : DialogFragment() {
         countryList.set(0, "Local")
 
         val inflater = requireActivity().layoutInflater
-        val view = inflater.inflate(R.layout.city_list_dialog, null)
+        _binding = CityListDialogBinding.inflate(inflater, null, false)
+        val view = binding.root
+        Log.d("TAG", "POINTN2")
         val mAdapter = ArrayAdapter<String>(
             context,
             android.R.layout.simple_list_item_single_choice,
             countryList
         )
-        view.city_list.adapter = mAdapter
-        view.city_list.setOnItemClickListener { _, view, i, l ->
+        binding.cityList.adapter = mAdapter
+        binding.cityList.setOnItemClickListener { _, view, i, l ->
             timezone = mAdapter.getItem(i)!!
         }
-        view.city_filter.addTextChangedListener {
+        binding.cityFilter.addTextChangedListener {
             mAdapter.filter.filter(it.toString())
         }
 
         builder.setTitle("Choose country timezone")
             .setView(view)
-            .setPositiveButton("SET",
+            .setPositiveButton(
+                "SET",
                 DialogInterface.OnClickListener { dialog, id ->
                     if (timezone.equals("Local")) {
                         clockViewModel.insertClock(Clock())

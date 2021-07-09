@@ -1,97 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="12dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginRight="12dp"
-    android:layout_marginBottom="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Switch
-        android:id="@+id/alarm_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/alarm_tv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/alarm_switch"
-        app:layout_constraintTop_toTopOf="parent" />
+        <variable
+            name="alarmdata"
+            type="com.andreasgift.myclock.alarm.Alarm" />
 
-    <LinearLayout
-        android:id="@+id/alarm_toggle"
+        <import type="com.andreasgift.myclock.BindingAdapter" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_tiny"
-        android:layout_marginBottom="@dimen/offset_tiny"
-        android:orientation="horizontal"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/alarm_tv">
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="8dp">
 
-        <ToggleButton
-            android:id="@+id/sun_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="S"
-            android:textOn="S" />
+        <Switch
+            android:id="@+id/alarm_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="@{alarmdata.on}"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ToggleButton
-            android:id="@+id/mon_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="M"
-            android:textOn="M" />
+        <TextView
+            android:id="@+id/alarm_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/alarm_switch"
+            app:layout_constraintTop_toTopOf="parent"
+            app:setTime="@{alarmdata}" />
 
-        <ToggleButton
-            android:id="@+id/tue_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="T"
-            android:textOn="T" />
+        <LinearLayout
+            android:id="@+id/alarm_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_tiny"
+            android:layout_marginBottom="@dimen/offset_tiny"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/alarm_tv">
 
-        <ToggleButton
-            android:id="@+id/wed_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="W"
-            android:textOn="W" />
+            <ToggleButton
+                android:id="@+id/sun_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(1)}"
+                android:clickable="false"
+                android:textOff="S"
+                android:textOn="S" />
 
-        <ToggleButton
-            android:id="@+id/thu_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="T"
-            android:textOn="T" />
+            <ToggleButton
+                android:id="@+id/mon_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(2)}"
+                android:clickable="false"
+                android:textOff="M"
+                android:textOn="M" />
 
-        <ToggleButton
-            android:id="@+id/fri_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="F"
-            android:textOn="F" />
+            <ToggleButton
+                android:id="@+id/tue_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(3)}"
+                android:clickable="false"
+                android:textOff="T"
+                android:textOn="T" />
 
-        <ToggleButton
-            android:id="@+id/sat_button"
-            style="@style/toggle_button_day"
-            android:clickable="false"
-            android:textOff="S"
-            android:textOn="S" />
-    </LinearLayout>
+            <ToggleButton
+                android:id="@+id/wed_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(4)}"
+                android:clickable="false"
+                android:textOff="W"
+                android:textOn="W" />
 
-    <TextView
-        android:id="@+id/label_alarm_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/offset_min"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/alarm_toggle" />
+            <ToggleButton
+                android:id="@+id/thu_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(5)}"
+                android:clickable="false"
+                android:textOff="T"
+                android:textOn="T" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <ToggleButton
+                android:id="@+id/fri_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(6)}"
+                android:clickable="false"
+                android:textOff="F"
+                android:textOn="F" />
+
+            <ToggleButton
+                android:id="@+id/sat_button"
+                style="@style/toggle_button_day"
+                android:checked="@{alarmdata.days.contains(7)}"
+                android:clickable="false"
+                android:textOff="S"
+                android:textOn="S" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/label_alarm_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_min"
+            android:text="@{alarmdata.label}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/alarm_toggle" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,8 +1,10 @@
-package com.andreasgift.myclock.Clock
+package com.andreasgift.myclock.clock
 
 import android.content.Context
-import android.content.res.Resources
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,13 +20,6 @@ abstract class SwipeCallback(context: Context) :
     private val background = ColorDrawable()
     private val backgroundColor = ContextCompat.getColor(context, R.color.colorAccent)
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
-
-    override fun getMovementFlags(
-        recyclerView: RecyclerView,
-        viewHolder: RecyclerView.ViewHolder
-    ): Int {
-        return super.getMovementFlags(recyclerView, viewHolder)
-    }
 
     override fun onMove(
         recyclerView: RecyclerView,

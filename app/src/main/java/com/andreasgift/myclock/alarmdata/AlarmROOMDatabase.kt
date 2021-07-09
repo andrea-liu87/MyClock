@@ -1,15 +1,10 @@
-package com.andreasgift.myclock.AlarmData
+package com.andreasgift.myclock.alarmdata
 
 import android.content.Context
 import androidx.room.*
-import com.andreasgift.myclock.Alarm.Alarm
+import com.andreasgift.myclock.alarm.Alarm
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import android.icu.lang.UCharacter.GraphemeClusterBreak.V
-import android.util.Log
-import com.google.gson.GsonBuilder
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @Database(entities = arrayOf(Alarm::class), version = 1)

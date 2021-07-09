@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/navigation_clock"
+    <item
+        android:id="@+id/clockFragment"
         android:icon="@drawable/ic_clock"
-        android:title="@string/clock"/>
+        android:title="@string/clock" />
 
-    <item android:id="@+id/navigation_alarm"
+    <item
+        android:id="@+id/alarmFragment"
         android:icon="@drawable/ic_alarm"
-        android:title="@string/alarm"/>
+        android:title="@string/alarm" />
 
-    <item android:id="@+id/navigation_stopwatch"
+    <item
+        android:id="@+id/stopwatchFragment"
         android:icon="@drawable/ic_stopwatch"
-        android:title="@string/stopwatch"/>
+        android:title="@string/stopwatch" />
 
-    <item android:id="@+id/navigation_timer"
+    <item
+        android:id="@+id/timerFragment"
         android:icon="@drawable/ic_hourglass"
-        android:title="@string/timer"/>
+        android:title="@string/timer" />
 
 </menu>

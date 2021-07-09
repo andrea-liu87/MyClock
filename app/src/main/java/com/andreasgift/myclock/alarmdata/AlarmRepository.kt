@@ -1,22 +1,23 @@
-package com.andreasgift.myclock.AlarmData
+package com.andreasgift.myclock.alarmdata
 
 import androidx.lifecycle.LiveData
-import com.andreasgift.myclock.Alarm.Alarm
+import com.andreasgift.myclock.alarm.Alarm
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 interface AlarmRepository {
-    val allAlarmData: LiveData<List<Alarm>>
+    val allAlarmData: Flow<List<Alarm>>
     suspend fun insertAlarm(alarm: Alarm)
     suspend fun deleteAlarm(alarm: Alarm)
     suspend fun deleteAll()
     suspend fun updateAlarm(alarm: Alarm)
+    suspend fun turnOffAlarm(id: Int)
     suspend fun getAlarm(id: Int): LiveData<Alarm>
 }
 
-class AlarmRepositoryImpl(private val dao: AlarmDao) : AlarmRepository {
+class AlarmRepositoryImpl @Inject constructor(private val alarmDao: AlarmDao) : AlarmRepository {
 
-    val alarmDao = dao
-
-    override val allAlarmData: LiveData<List<Alarm>> = alarmDao.getAllAlarm()
+    override val allAlarmData: Flow<List<Alarm>> = alarmDao.getAllAlarm()
 
     override suspend fun insertAlarm(alarm: Alarm) {
         alarmDao.insert(alarm)
@@ -32,6 +33,10 @@ class AlarmRepositoryImpl(private val dao: AlarmDao) : AlarmRepository {
 
     override suspend fun updateAlarm(alarm: Alarm) {
         alarmDao.update(alarm)
+    }
+
+    override suspend fun turnOffAlarm(id: Int) {
+        alarmDao.turnOff(id)
     }
 
     override suspend fun getAlarm(id: Int): LiveData<Alarm> {

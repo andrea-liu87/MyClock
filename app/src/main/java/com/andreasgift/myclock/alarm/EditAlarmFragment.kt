@@ -1,26 +1,29 @@
-package com.andreasgift.myclock.Alarm
+package com.andreasgift.myclock.alarm
 
 import android.annotation.TargetApi
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import com.andreasgift.myclock.AlarmData.AlarmViewModel
+import androidx.fragment.app.activityViewModels
 import com.andreasgift.myclock.Helper.putArgs
 import com.andreasgift.myclock.R
-import kotlinx.android.synthetic.main.fragment_alarm_edit.view.*
-import org.koin.android.viewmodel.ext.android.sharedViewModel
+import com.andreasgift.myclock.alarmdata.AlarmViewModel
+import com.andreasgift.myclock.databinding.FragmentAlarmEditBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
 private const val ALARM_KEY = "alarmKey"
 
+@AndroidEntryPoint
 class EditAlarmFragment : DialogFragment() {
+    private var _binding: FragmentAlarmEditBinding? = null
+    private val binding get() = _binding!!
+
     private var alarm: Alarm? = null
-    val alarmViewModel: AlarmViewModel by sharedViewModel<AlarmViewModel>()
+    private val alarmViewModel by activityViewModels<AlarmViewModel>()
 
     companion object {
         fun newInstance(alarm: Alarm? = null) = EditAlarmFragment().putArgs {
@@ -44,17 +47,19 @@ class EditAlarmFragment : DialogFragment() {
         val builder = AlertDialog.Builder(context)
 
         val inflater = requireActivity().layoutInflater
-        val view = inflater.inflate(R.layout.fragment_alarm_edit, null)
+        _binding = FragmentAlarmEditBinding.inflate(inflater, null, false)
+        val view = binding.root
         alarm?.let {
-            updateUi(view, it)
+            binding.alarmdata = alarm
         }
         builder.setView(view)
-            .setPositiveButton(context.getString(R.string.set),
+            .setPositiveButton(
+                context.getString(R.string.set),
                 DialogInterface.OnClickListener { dialog, id ->
                     alarm?.let {
-                        updateAlarm(view, it)
+                        updateAlarm(it)
                     } ?: run {
-                        addNewAlarm(view)
+                        addNewAlarm()
                     }
                 })
             .setNegativeButton(context.getString(R.string.cancel),
@@ -64,78 +69,57 @@ class EditAlarmFragment : DialogFragment() {
     }
 
     @TargetApi(23)
-    private fun updateUi(view: View, alarm: Alarm) {
-        view.time_picker.hour = alarm.alarmHour
-        view.time_picker.minute = alarm.alarmMin
-        view.label_et.setText(alarm.label)
-        alarm.days?.forEach {
-            when (it) {
-                Calendar.MONDAY -> view.mon_button.isChecked = true
-                Calendar.TUESDAY -> view.tue_button.isChecked = true
-                Calendar.WEDNESDAY -> view.wed_button.isChecked = true
-                Calendar.THURSDAY -> view.thu_button.isChecked = true
-                Calendar.FRIDAY -> view.fri_button.isChecked = true
-                Calendar.SATURDAY -> view.sat_button.isChecked = true
-                Calendar.SUNDAY -> view.sun_button.isChecked = true
-            }
-        }
-    }
-
-    @TargetApi(23)
-    private fun addNewAlarm(view: View) {
+    private fun addNewAlarm() {
         val newAlarm = Alarm(
-            view.time_picker.hour,
-            view.time_picker.minute,
-            view.time_picker.hour < 12,
-            alarmRepeatScheduleList(view),
+            binding.timePicker.hour,
+            binding.timePicker.minute,
+            binding.timePicker.hour < 12,
+            alarmRepeatScheduleList(),
             true,
-            view.label_et.text.toString(),
+            binding.labelEt.text.toString(),
             (0..10000).random()
         )
-        alarmViewModel.insertAlarm(newAlarm)
-        Log.d("alarm id : ", newAlarm.id.toString() + " is added")
         newAlarm.setAlarmScheduleOn(this.requireActivity())
+        alarmViewModel.insertAlarm(newAlarm)
     }
 
     @TargetApi(23)
-    private fun updateAlarm(view: View, alarm: Alarm) {
+    private fun updateAlarm(alarm: Alarm) {
         alarm.setAlarmScheduleOff(this.requireActivity())
         val updatedAlarm = Alarm(
-            view.time_picker.hour,
-            view.time_picker.minute,
-            view.time_picker.hour < 12,
-            alarmRepeatScheduleList(view),
+            binding.timePicker.hour,
+            binding.timePicker.minute,
+            binding.timePicker.hour < 12,
+            alarmRepeatScheduleList(),
             true,
-            view.label_et.text.toString(),
+            binding.labelEt.text.toString(),
             alarm.id
         )
-        alarmViewModel.updateAlarm(updatedAlarm)
-        updateUi(view, updatedAlarm)
-        Log.d("alarm id : ", alarm.id.toString() + " is updated")
         updatedAlarm.setAlarmScheduleOn(this.requireActivity())
+        alarmViewModel.updateAlarm(updatedAlarm)
     }
 
-    private fun alarmRepeatScheduleList(view: View): ArrayList<Int>? {
+    private fun alarmRepeatScheduleList(): ArrayList<Int>? {
         val arrayList = arrayListOf<Int>()
-        if (view.mon_button.isChecked) {
+        if (binding.monButton.isChecked) {
             arrayList.add(Calendar.MONDAY)
         }
-        if (view.tue_button.isChecked) {
+        if (binding.tueButton.isChecked) {
             arrayList.add(Calendar.TUESDAY)
         }
-        if (view.wed_button.isChecked) {
+        if (binding.wedButton.isChecked) {
             arrayList.add(Calendar.WEDNESDAY)
         }
-        if (view.thu_button.isChecked) {
+        if (binding.thuButton.isChecked) {
             arrayList.add(Calendar.THURSDAY)
         }
-        if (view.fri_button.isChecked) {
+        if (binding.friButton.isChecked) {
             arrayList.add(Calendar.FRIDAY)
         }
-        if (view.sat_button.isChecked) {
+        if (binding.satButton.isChecked) {
             arrayList.add(Calendar.SATURDAY)
         }
-        if (view.sun_button.isChecked) {
+        if (binding.sunButton.isChecked) {
             arrayList.add(Calendar.SUNDAY)
         }
         if (arrayList.size == 0) {
