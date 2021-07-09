@@ -3,16 +3,16 @@
   [![Codacy Badge](https://api.codacy.com/project/badge/Grade/13f0e752ddc34dc0a50842e43e23f934)](https://www.codacy.com/manual/snufflesrea/MyClock?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=snufflesrea/MyClock&amp;utm_campaign=Badge_Grade)
 </br>Beautiful and lightweight android clock
 
-MinSDKVersion : 21
+MinSDKVersion : 26
 </br>Development Tool : Android Studio Library
-</br>Library : androidx-ROOM, [ClockView](https://github.com/arbelkilani/Clock-view), [Koin](https://insert-koin.io/)
+</br>Library : androidx-ROOM, [ClockView](https://github.com/arbelkilani/Clock-view), Hilt Dagger, MVVM
 </br>Programming languange : Kotlin
 
 Tested Device :
 </br> Nexus 5 API 23
   
 Version : 2
-</br>Version Code : 1.0.1
+</br>Version Code : 1.1.0
 
 ![Screenshoot](https://github.com/snufflesrea/MyClock/blob/master/SS1.png)
 ![Screenshoot](https://github.com/snufflesrea/MyClock/blob/master/SS2.png)
