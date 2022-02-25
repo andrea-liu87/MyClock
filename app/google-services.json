@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "894651289489",
+    "project_id": "myclock-7ec90",
+    "storage_bucket": "myclock-7ec90.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894651289489:android:396870434d56de22b45430",
+        "android_client_info": {
+          "package_name": "com.andreasgift.myclock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "894651289489-9scha20n5cot4d1flc9h1nltg3ei7s02.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwyX7XndF5oeUL_-aAVj2kztbENr3lbbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "894651289489-9scha20n5cot4d1flc9h1nltg3ei7s02.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
